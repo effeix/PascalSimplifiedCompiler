@@ -5,33 +5,30 @@ class Parser():
     
     def parse():
         result = 0
-        token = Parser.tokens.next()
+        Parser.tokens.next()
 
-        if token.type == "INT":
-            result = token
-            token = Parser.tokens.next()
+        if Parser.tokens.current.type == "INT":
+            result = Parser.tokens.current.value
+            Parser.tokens.next()
             
-            while token:
-                if token.type == "PLUS":
-                    token = Parser.tokens.next()
-                    if is_int(token):
-                        result += token
+            while Parser.tokens.current.type != None:
+                if Parser.tokens.current.type == "PLUS":
+                    Parser.tokens.next()
+                    if Parser.tokens.current.type == "INT":
+                        result += Parser.tokens.current.value
                     else:
                         raise ValueError(ERROR)
-                elif token.type == "MINUS":
-                    token = Parser.tokens.next()
-                    if is_int(token):
-                        result -= token
+                elif Parser.tokens.current.type == "MINUS":
+                    Parser.tokens.next()
+                    if Parser.tokens.current.type == "INT":
+                        result -= Parser.tokens.current.value
                     else:
                         raise ValueError(ERROR)
                 else:
                     raise ValueError(ERROR)
+
+                Parser.tokens.next()
         else:
             raise ValueError(ERROR)
             
         return result
-                    
-
-
-
-        
