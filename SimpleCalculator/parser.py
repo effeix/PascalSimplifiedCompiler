@@ -1,3 +1,5 @@
+from tokenizer import Tokenizer
+
 class Parser():
 
     ERROR = "Invalid token"
@@ -7,9 +9,13 @@ class Parser():
         result = 0
         Parser.tokens.next()
 
+        print(Parser.tokens.current.value)
+
         if Parser.tokens.current.type == "INT":
             result = Parser.tokens.current.value
             Parser.tokens.next()
+
+            print(Parser.tokens.current.value)
             
             while Parser.tokens.current.type != None:
                 if Parser.tokens.current.type == "PLUS":
@@ -17,18 +23,18 @@ class Parser():
                     if Parser.tokens.current.type == "INT":
                         result += Parser.tokens.current.value
                     else:
-                        raise ValueError(ERROR)
+                        raise ValueError(Parser.ERROR)
                 elif Parser.tokens.current.type == "MINUS":
                     Parser.tokens.next()
                     if Parser.tokens.current.type == "INT":
                         result -= Parser.tokens.current.value
                     else:
-                        raise ValueError(ERROR)
+                        raise ValueError(Parser.ERROR)
                 else:
-                    raise ValueError(ERROR)
+                    raise ValueError(Parser.ERROR)
 
                 Parser.tokens.next()
         else:
-            raise ValueError(ERROR)
+            raise ValueError(Parser.ERROR)
             
         return result
