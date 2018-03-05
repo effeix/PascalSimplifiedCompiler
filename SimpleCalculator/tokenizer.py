@@ -21,6 +21,10 @@ class Tokenizer():
             while self.origin[self.position] == " ":
                 self.position += 1
 
+            if self.origin[self.position] == "{":
+                while self.origin[self.position] != "}":
+                    self.position += 1
+
             if self.origin[self.position] == "+":
                 self.current = Token("PLUS", None)
                 self.position += 1
@@ -28,10 +32,16 @@ class Tokenizer():
             elif self.origin[self.position] == "-":
                 self.current = Token("MINUS", None)
                 self.position += 1
+            
+            elif self.origin[self.position] == "*":
+                self.current = Token("MULT", None)
+                self.position += 1
+            
+            elif self.origin[self.position] == "/":
+                self.current = Token("DIV", None)
+                self.position += 1
 
-            elif self.origin[self.position] == "{":
-                while self.origin[self.position] != "}":
-                    self.position += 1
+            
 
             elif self.isnumber(self.origin[self.position]):
                 while self.isnumber(self.origin[self.position]):
