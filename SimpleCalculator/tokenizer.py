@@ -29,6 +29,10 @@ class Tokenizer():
                 self.current = Token("MINUS", None)
                 self.position += 1
 
+            elif self.origin[self.position] == "{":
+                while self.origin[self.position] != "}":
+                    self.position += 1
+
             elif self.isnumber(self.origin[self.position]):
                 while self.isnumber(self.origin[self.position]):
                     aux += self.origin[self.position]
