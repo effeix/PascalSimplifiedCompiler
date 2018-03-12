@@ -30,7 +30,7 @@
 ### EBNF
 ```
 N = [0-9]+
-expression = term(('+'|'-')term)*
-term = factor(('*'|'/')factor)*
+expression = term (('+'|'-') term)*
+term = factor (('*'|'/') factor)*
 factor = '(' expression ')' | N | ('+'|'-')factor
 ```
