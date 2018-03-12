@@ -29,6 +29,7 @@
 
 ### EBNF
 ```
-expression = term(('+','-')term)*
-term = num(('*','/')num)*
+expression = term(('+'|'-')term)*
+term = factor(('*'|'/')factor)*
+factor = '(' expression ')' | num | ('+'|'-')factor
 ```
