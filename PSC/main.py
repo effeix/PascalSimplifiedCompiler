@@ -1,7 +1,7 @@
 from parser import Parser
 
 def main():
-    Parser.tokens.origin = "2+  {sqd}  3*5{}/3  {}"
+    Parser.tokens.origin = "(2+3)*(3+5)"
     result = Parser.parse_expression()
     print(result)
 

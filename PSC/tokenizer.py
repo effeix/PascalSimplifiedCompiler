@@ -41,7 +41,6 @@ class Tokenizer():
             else:
                 break
         
-
         #check if its a valid token
         if self.position < len(self.origin):
             if self.origin[self.position] == "+":
@@ -59,6 +58,14 @@ class Tokenizer():
             elif self.origin[self.position] == "/":
                 self.current = Token("DIV", None)
                 self.position += 1 
+            
+            elif self.origin[self.position] == "(":
+                self.current = Token("OPEN_PAR", None)
+                self.position += 1 
+            
+            elif self.origin[self.position] == ")":
+                self.current = Token("CLOSE_PAR", None)
+                self.position += 1
 
             elif self.isnumber(self.origin[self.position]):
                 while self.isnumber(self.origin[self.position]):
