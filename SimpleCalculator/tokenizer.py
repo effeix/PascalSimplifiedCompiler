@@ -14,7 +14,7 @@ class Tokenizer():
         self.current = None
         aux = ""
 
-        #checks for commentary blocks and white spaces in no particular order, and ignores then
+        #checks for commentary blocks and white spaces in no particular order, and ignores them
         while True:
             if self.position < len(self.origin):
                 if self.origin[self.position] == " ":
