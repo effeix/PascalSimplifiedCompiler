@@ -7,7 +7,7 @@
 - [x] Multiplication / Division
 - [x] Comments
 - [x] Syntatic Errors
-- [ ] Parenthesis
+- [x] Parenthesis
 - [ ] Unary Operators
 - [ ] Abstract Syntax Tree
 - [ ] Program Flow
