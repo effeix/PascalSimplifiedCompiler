@@ -8,14 +8,26 @@ class Parser():
 
     tokens = Tokenizer()
 
+    def parse():
+        Parser.tokens.next()
+        return Parser.parse_expression()
+
     def parse_factor():
         result = 0
 
         if Parser.tokens.current.type == "OPEN_PAR":
-            return Parser.parse_expression()
+            Parser.tokens.next()
+            expr = Parser.parse_expression()
+
+            if Parser.tokens.current == None or Parser.tokens.current.type != "CLOSE_PAR":
+                raise ValueError(Parser.ERROR)
+            
+            Parser.tokens.next()
+            return expr
 
         if Parser.tokens.current.type == "INT":
             result = Parser.tokens.current.value
+            Parser.tokens.next()
 
         else:
             raise ValueError(Parser.ERROR)
@@ -26,7 +38,6 @@ class Parser():
         result = 0
 
         result = Parser.parse_factor()
-        Parser.tokens.next()
         
         while Parser.tokens.current != None and Parser.tokens.current.type in Parser.term_ops:
             if Parser.tokens.current.type == "MULT":
@@ -46,8 +57,7 @@ class Parser():
         return result
     
     def parse_expression():
-        result = 0
-        Parser.tokens.next()     
+        result = 0     
 
         result = Parser.parse_term()
         
