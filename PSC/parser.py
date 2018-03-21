@@ -8,6 +8,9 @@ class Parser():
 
     tokens = Tokenizer()
 
+    def set_origin(origin):
+        Parser.tokens.origin = origin 
+
     def parse():
         Parser.tokens.next()
         return Parser.parse_expression()
