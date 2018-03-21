@@ -1,9 +1,13 @@
 from parser import Parser
 
-def main():
-    Parser.tokens.origin = "3+3)"
+def read_pascal(f):
+    with open(f, 'r') as ff:
+        return ff.readline().rstrip("\n")
+
+def main(origin):
+    Parser.set_origin(origin)
     result = Parser.parse()
-    print(result)
 
 if __name__ == "__main__":
-    main()
+    origin = read_pascal("hello.pas")
+    print(main(origin))
