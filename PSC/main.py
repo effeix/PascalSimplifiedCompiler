@@ -7,6 +7,7 @@ def read_pascal(f):
 def main(origin):
     Parser.set_origin(origin)
     result = Parser.parse()
+    return result
 
 if __name__ == "__main__":
     origin = read_pascal("hello.pas")
