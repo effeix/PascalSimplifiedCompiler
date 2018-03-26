@@ -29,8 +29,15 @@
 
 ### EBNF
 ```
-N = [0-9]+
-expression = term (('+'|'-') term)*
-term = factor (('*'|'/') factor)*
-factor = '(' expression ')' | N | ('+'|'-')factor
+commands = "begin", command, {";", command} [";"] "end";
+command = attribution | commands | print;
+attribution = identifier, ":=", expression;
+print = "print", "(", expression, ")";
+expression = term, { ("+","-"), term };
+term = factor, { ("*", "/"), factor };
+factor = ("+", "-"), factor | number | "(", expression, ")" | identifier;
+identifier = letter, {letter | digit | "_" };
+number = digit, { digit };
+letter = ( a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z );
+digit = ( 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 )
 ```
