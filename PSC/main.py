@@ -1,4 +1,5 @@
 from parser import Parser
+from binaryop import BinaryOp
 
 def read_pascal(f):
     with open(f, 'r') as ff:
@@ -6,9 +7,12 @@ def read_pascal(f):
 
 def main(origin):
     Parser.set_origin(origin)
-    result = Parser.parse()
+    parse = Parser.parse()
+    result = parse.eval()
     return result
 
 if __name__ == "__main__":
     origin = read_pascal("hello.pas")
+
+
     print(main(origin))
