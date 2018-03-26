@@ -8,8 +8,8 @@
 - [x] Comments
 - [x] Syntatic Errors
 - [x] Parenthesis
-- [ ] Unary Operators
-- [ ] Abstract Syntax Tree
+- [x] Unary Operators
+- [x] Abstract Syntax Tree
 - [ ] Program Flow
 - [ ] Keywords
 - [ ] Variables
