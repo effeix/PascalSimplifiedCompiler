@@ -8,8 +8,5 @@ class SymbolTable():
         
         return self.table[id]
 
-    def set_identifier(self, id, value):
-        if not id in self.table.keys():
-            raise KeyError(f'{id} not in SymbolTable')
-        
+    def set_identifier(self, id, value):        
         self.table[id] = value
