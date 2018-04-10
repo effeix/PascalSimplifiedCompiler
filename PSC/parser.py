@@ -18,9 +18,10 @@ class Parser():
         return Parser.parse_expression()
 
     def parse_factor():
-
+        print("oi2"+Parser.tokens.current.type)
         if Parser.tokens.current.type == "OPEN_PAR":
             Parser.tokens.next()
+            print("oi"+Parser.tokens.current.type)
             expr = Parser.parse_expression()
 
             if Parser.tokens.current == None or Parser.tokens.current.type != "CLOSE_PAR":
@@ -30,9 +31,9 @@ class Parser():
             return expr
 
         if Parser.tokens.current.type == "INT":
-            result_node = BinaryOp(Parser.tokens.current.value)
+            result = BinaryOp(Parser.tokens.current.value)
             Parser.tokens.next()
-            return result_node
+            return result
 
         else:
             raise ValueError(Parser.ERROR)          
@@ -45,8 +46,7 @@ class Parser():
             
             result = BinaryOp(Parser.tokens.current.type)
             
-            Parser.tokens.next()
-                
+            Parser.tokens.next()         
             result_factor = Parser.parse_factor()
  
             result.set_child(result_cp)
@@ -59,16 +59,39 @@ class Parser():
     def parse_expression():
         result = Parser.parse_term()
         
+        
         while Parser.tokens.current != None and Parser.tokens.current.type in Parser.expression_ops:
             result_cp = result
             
             result = BinaryOp(Parser.tokens.current.type)
             
-            Parser.tokens.next()
-                
+            Parser.tokens.next()  
             result_term = Parser.parse_term()
             
             result.set_child(result_cp)
-            result.set_child(result_term)       
+            result.set_child(result_term) 
+             
             
         return result
+
+    def parse_rel_exp():
+        pass
+
+    def parse_statement():
+        pass
+
+    def parse_assignment():
+        pass
+
+    def parse_statments():
+        pass
+
+    def parse_print():
+        pass
+
+    def parse_if_else():
+        pass
+
+    def parse_while():
+        pass
+
