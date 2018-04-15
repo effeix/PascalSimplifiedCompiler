@@ -29,8 +29,8 @@
 
 ### EBNF
 ```
-commands = "begin", command, {";", command} [";"] "end";
-command = attribution | commands | print;
+statements = "begin", statement, {";", statement} [";"] "end";
+statement = attribution | statements | print;
 attribution = identifier, ":=", expression;
 print = "print", "(", expression, ")";
 expression = term, { ("+","-"), term };
