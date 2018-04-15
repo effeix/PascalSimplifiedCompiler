@@ -18,10 +18,11 @@ class Parser():
         return Parser.parse_expression()
 
     def parse_factor():
-        print("oi2"+Parser.tokens.current.type)
-        if Parser.tokens.current.type == "OPEN_PAR":
+        if Parser.tokens.current == None:
+            raise ValueError(Parser.ERROR)  
+
+        elif Parser.tokens.current.type == "OPEN_PAR":
             Parser.tokens.next()
-            print("oi"+Parser.tokens.current.type)
             expr = Parser.parse_expression()
 
             if Parser.tokens.current == None or Parser.tokens.current.type != "CLOSE_PAR":
@@ -30,9 +31,18 @@ class Parser():
             Parser.tokens.next()
             return expr
 
-        if Parser.tokens.current.type == "INT":
+        elif Parser.tokens.current.type == "INT":
             result = BinaryOp(Parser.tokens.current.value)
+            
             Parser.tokens.next()
+            return result
+
+        elif Parser.tokens.current.type in Parser.expression_ops:
+            result = UnaryOp(Parser.tokens.current.type)
+
+            Parser.tokens.next()
+            result.set_child(Parser.parse_factor())
+
             return result
 
         else:
@@ -46,31 +56,29 @@ class Parser():
             
             result = BinaryOp(Parser.tokens.current.type)
             
-            Parser.tokens.next()         
-            result_factor = Parser.parse_factor()
- 
-            result.set_child(result_cp)
-            result.set_child(result_factor)
-
             Parser.tokens.next()
+
+            result.set_child(result_cp)
+            result.set_child(Parser.parse_factor())
 
         return result
     
     def parse_expression():
         result = Parser.parse_term()
         
-        
         while Parser.tokens.current != None and Parser.tokens.current.type in Parser.expression_ops:
             result_cp = result
             
             result = BinaryOp(Parser.tokens.current.type)
             
-            Parser.tokens.next()  
-            result_term = Parser.parse_term()
+            Parser.tokens.next()
             
             result.set_child(result_cp)
-            result.set_child(result_term) 
-             
+            result.set_child(Parser.parse_term())
+        
+        #se eu to acabando a conta n tem um close parents e tem outro elemento que nao eh none
+        if Parser.tokens.current != None and Parser.tokens.current.type != "CLOSE_PAR":
+            raise ValueError(Parser.ERROR)
             
         return result
 
