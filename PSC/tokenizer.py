@@ -39,6 +39,9 @@ class Tokenizer():
                         else:
                             raise ValueError("Invalid token")
                     self.position += 1
+                
+                elif self.origin[self.position] == "\n":
+                    self.position+=1
             
                 else:
                     break
