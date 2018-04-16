@@ -1,6 +1,7 @@
 from tokenizer import Tokenizer
 from binaryop import BinaryOp
 from unaryop import UnaryOp
+from program import Program
 
 class Parser():
     ERROR = "Invalid token"
@@ -15,7 +16,7 @@ class Parser():
 
     def parse():
         Parser.tokens.next()
-        return Parser.parse_expression()
+        return Parser.parse_statetments()
 
     def parse_factor():
         if Parser.tokens.current == None:
@@ -91,8 +92,42 @@ class Parser():
     def parse_assignment():
         pass
 
-    def parse_statments():
-        pass
+    def parse_vardec():
+        return 0
+
+    def parse_funcdec():
+        return 0
+
+    def parse_program():
+        if Parser.tokens.current.type == "PROGRAM":
+            Parser.tokens.next()
+            if Parser.tokens.current.type == "IDENTIFIER":
+                Parser.tokens.next()
+                if Parser.tokens.current.type == "STMT_FINISH":
+                    result = Program()
+                    result.set_child(Parser.parse_vardec())
+                    result.set_child(Parser.parse_funcdec())
+                    result.set_child(Parser.parse_statements())
+                    return result 
+                else:
+                    raise ValuError(Parser.ERROR)
+            else:
+                raise ValueError(Parser.ERROR)
+        else:
+            raise ValueError(Parser.ERROR)
+
+    def parse_statements():
+        if Parser.tokens.current.type == "BEGIN":
+            Parser.tokens.next()
+            result = Parser.parse_statement()
+
+            while Parser.tokens.current.type == "STMT_FINISH":
+                result = Parser.parse_statement()
+
+            if Parser.tokens.current.type == "END":
+                raise ValueError(Parser.ERROR)
+        else:
+            raise ValueError(Parser.ERROR)
 
     def parse_print():
         pass

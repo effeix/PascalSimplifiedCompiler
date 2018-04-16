@@ -1,15 +1,11 @@
 from token2 import Token
 
-
-
-
-
 class Tokenizer():
 
     def __init__(self):
         self.origin = "0"
         self.position = 0
-        self.reserved_words = ["BEGIN", "END", "Print" ":="]
+        self.reserved_words = ["BEGIN", "END", "Print", ":="]
         self.current = None
 
     def isnumber(self, token):
@@ -49,8 +45,6 @@ class Tokenizer():
             else:
                 break
         
-
-        
         #check if its a valid token
         if self.position < len(self.origin):
             if self.origin[self.position] == "+":
@@ -79,6 +73,10 @@ class Tokenizer():
             
             elif self.origin[self.position] == ";":
                 self.current = Token("STMT_FINISH", None)
+                self.position += 1
+
+            elif self.origin[self.position] == ".":
+                self.current = Token("DOT")
                 self.position += 1
             
             elif self.origin[self.position] == ":":
@@ -119,8 +117,10 @@ class Tokenizer():
                     self.current = Token("END", None)
                 elif aux == "Print":
                     self.current = Token("Print", None)
+                elif aux == "PROGRAM":
+                    self.current = Token("PROGRAM")
                 else:
-                    self.current = Token("WORD", aux)
+                    self.current = Token("IDENTIFIER", aux)
                 aux = ""
 
             else:
