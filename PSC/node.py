@@ -1,5 +1,5 @@
 class Node():
-    def __init__(self, _value):
+    def __init__(self, _value=None):
         self.value = _value
         self.children = []
     
