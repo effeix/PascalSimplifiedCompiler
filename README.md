@@ -10,11 +10,11 @@
 - [x] Parenthesis
 - [x] Unary Operators
 - [x] Abstract Syntax Tree
-- [ ] Program Flow
-- [ ] Keywords
-- [ ] Variables
-- [ ] Symbol Table
-- [ ] Print
+- [x] Program Flow
+- [x] Keywords
+- [x] Variables
+- [x] Symbol Table
+- [x] Print
 - [ ] Boolean Operators
 - [ ] Conditional Statements
 - [ ] Loops
