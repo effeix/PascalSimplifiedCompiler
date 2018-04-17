@@ -1,9 +1,9 @@
 from node import Node
 
 class UnaryOp(Node):
-    def eval(self):
+    def eval(self, st):
         if self.children:
-            result = self.children[0].eval()
+            result = self.children[0].eval(st)
         
         if self.value == "PLUS":
             return result

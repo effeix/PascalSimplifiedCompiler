@@ -1,4 +1,4 @@
 class Token():
-    def __init__(self, _type, _value=None):
+    def __init__(self, _type, value=None):
         self.type = _type
-        self.value = _value
+        self.value = value

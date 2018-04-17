@@ -1,10 +1,10 @@
 from node import Node
 
 class BinaryOp(Node):
-    def eval(self):
+    def eval(self, st):
         if self.children:
-            result_a = self.children[0].eval()
-            result_b = self.children[1].eval()  
+            result_a = self.children[0].eval(st)
+            result_b = self.children[1].eval(st)  
 
         if self.value == "PLUS":
             return result_a + result_b

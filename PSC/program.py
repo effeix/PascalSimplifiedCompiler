@@ -1,7 +1,7 @@
 from node import Node
 
 class Program(Node):
-	def eval():
-		self.children[0].eval()
-		self.children[1].eval()
-		self.children[2].eval()
+	def eval(self, st):
+		self.children[0].eval(st)
+		#self.children[1].eval(st)
+		#self.children[2].eval(st)

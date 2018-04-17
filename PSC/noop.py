@@ -1,3 +1,5 @@
+from node import Node
+
 class NoOp(Node):
-    def __init__(self):
+    def eval(self, st):
         pass

@@ -1,4 +1,4 @@
-from token2 import Token
+from token import Token
 
 class Tokenizer():
 
@@ -10,6 +10,9 @@ class Tokenizer():
 
     def isnumber(self, token):
         return token.isdigit()
+    
+    def isalphas(self, token):
+        return token.isalpha()
 
     def next(self):
         self.current = None
@@ -37,6 +40,7 @@ class Tokenizer():
                     self.position += 1
                 
                 elif self.origin[self.position] == "\n":
+                    print("oi")
                     self.position+=1
             
                 else:
@@ -100,8 +104,8 @@ class Tokenizer():
                 self.current = Token("INT", int(aux))
                 aux = ""
             
-            elif self.isalpha(self.origin[self.position]):
-                while self.isalpha(self.origin[self.position]) or self.origin[self.position] == "_":
+            elif self.isalphas(self.origin[self.position]):
+                while self.isalphas(self.origin[self.position]) or self.origin[self.position] == "_":
                     aux += self.origin[self.position]
 
                     if self.position < len(self.origin)-1:
@@ -120,7 +124,7 @@ class Tokenizer():
                 elif aux == "PROGRAM":
                     self.current = Token("PROGRAM")
                 else:
-                    self.current = Token("IDENTIFIER", aux)
+                    self.current = Token("WORD", aux)
                 aux = ""
 
             else:
