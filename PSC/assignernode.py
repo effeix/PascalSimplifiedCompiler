@@ -1,6 +1,6 @@
 from node import Node
 
-class AssignerOp(Node):
+class AssignerNode(Node):
     def eval(self, st):
         word = self.value
         val = self.children[0].eval(st)

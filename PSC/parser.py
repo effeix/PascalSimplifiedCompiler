@@ -1,19 +1,21 @@
 from tokenizer import Tokenizer
 from binaryop import BinaryOp
 from unaryop import UnaryOp
-from assignerop import AssignerOp
-from wordresop import WordResOp
-from printop import PrintOp
-from stmtsop import StmtsOp
+from assignernode import AssignerNode
+from identifiernode import IdentifierNode
+from printnode import PrintNode
+from statementsnode import StatementsNode
+from nullnode import NullNode
+from condnode import CondNode
+from loopnode import LoopNode
 from program import Program
-from intval import IntVal
 
 class Parser():
     ERROR = "Invalid token"
 
     term_ops = ["MULT", "DIV"]
-    expression_ops = ["MINUS", "PLUS"]
-
+    expression_ops = ["MINUS", "PLUS", "OR", "AND"]
+    expression_rel_ops = ["EQUAL", "MORE_THAN", "LESS_THAN"]
     tokens = Tokenizer()
 
     def set_origin(origin):
@@ -48,7 +50,7 @@ class Parser():
             return result
         
         elif Parser.tokens.current.type == "WORD":
-            result = WordResOp(Parser.tokens.current.value)
+            result = IdentifierNode(Parser.tokens.current.value)
 
             Parser.tokens.next()
             return result
@@ -83,18 +85,30 @@ class Parser():
             
             result.set_child(result_cp)
             result.set_child(Parser.parse_term())
+        
         #GAMBIARRA, REMOVER
         #se eu to acabando a conta n tem um close parents e tem outro elemento que nao eh none
-        if Parser.tokens.current != None and Parser.tokens.current.type != "CLOSE_PAR" and Parser.tokens.current.type != "STMT_FINISH":
-            raise ValueError(Parser.ERROR)
+        #if Parser.tokens.current != None and Parser.tokens.current.type != "CLOSE_PAR" and Parser.tokens.current.type != "STMT_FINISH":
+        #    raise ValueError(Parser.ERROR)
             
         return result
 
     def parse_rel_exp():
-        pass 
+        result = Parser.parse_expression()
+        
+        while Parser.tokens.current != None and Parser.tokens.current.type in Parser.expression_rel_ops:
+            result_cp = result
+            
+            result = BinaryOp(Parser.tokens.current.type)
+            
+            Parser.tokens.next()
+            
+            result.set_child(result_cp)
+            result.set_child(Parser.parse_expression())
+        
+        return result
 
     def parse_assignment():
-        print("parse_assignemnt")
         word = Parser.tokens.current.value
         
         Parser.tokens.next()
@@ -103,10 +117,9 @@ class Parser():
             raise ValueError(Parser.ERROR)
 
         elif Parser.tokens.current.type == "ASSIGN":
-            result = AssignerOp(word)
+            result = AssignerNode(word)
             
             Parser.tokens.next()
-            print(Parser.tokens.current.value)
             result.set_child(Parser.parse_expression())
 
             return result
@@ -114,14 +127,13 @@ class Parser():
             raise ValueError(Parser.ERROR)
     
     def parse_print():
-        print("parse_print")
         Parser.tokens.next()
         
         if Parser.tokens.current == None:
             raise ValueError(Parser.ERROR)
 
         elif Parser.tokens.current.type == "OPEN_PAR":
-            result = PrintOp()
+            result = PrintNode()
 
             Parser.tokens.next()
             result.set_child(Parser.parse_expression())
@@ -137,24 +149,114 @@ class Parser():
 
 
     def parse_if_else():
-        pass
+        Parser.tokens.next()
+        
+        if Parser.tokens.current == None:
+            raise ValueError(Parser.ERROR)
+        
+        elif Parser.tokens.current.type == "OPEN_PAR":
+
+            result = CondNode()
+            
+            Parser.tokens.next()
+
+            result.set_child(Parser.parse_rel_exp())
+
+            if Parser.tokens.current.type == "CLOSE_PAR":
+
+                Parser.tokens.next()
+                
+                if Parser.tokens.current.type == "THEN":
+
+                    Parser.tokens.next()
+                
+                    if Parser.tokens.current.type == "BEGIN":
+
+                        result.set_child(Parser.parse_statements())
+                        
+                        if Parser.tokens.current.type == "ELSE":
+
+                            Parser.tokens.next()
+
+                            if Parser.tokens.current.type == "BEGIN":
+
+                                result.set_child(Parser.parse_statements())
+                        
+                        else:
+                            result.set_child(NullNode())
+
+                    else:
+                        raise ValueError(Parser.ERROR)
+                else:
+                    raise ValueError(Parser.ERROR)
+                
+            else:
+                raise ValueError(Parser.ERROR)
+
+        else:
+            raise ValueError(Parser.ERROR)
+        
+        return result
+                    
+
+
+        
+
+        
 
     def parse_while():
-        pass
+        Parser.tokens.next()
+        
+        if Parser.tokens.current == None:
+            raise ValueError(Parser.ERROR)
+        
+        elif Parser.tokens.current.type == "OPEN_PAR":
+
+            result = LoopNode()
+            
+            Parser.tokens.next()
+
+            result.set_child(Parser.parse_rel_exp())
+
+            if Parser.tokens.current.type == "CLOSE_PAR":
+
+                Parser.tokens.next()
+                
+                if Parser.tokens.current.type == "DO":
+
+                    Parser.tokens.next()
+                
+                    if Parser.tokens.current.type == "BEGIN":
+
+                        result.set_child(Parser.parse_statements())
+
+                    else:
+                        raise ValueError(Parser.ERROR)
+                else:
+                    raise ValueError(Parser.ERROR)
+                
+            else:
+                raise ValueError(Parser.ERROR)
+        
+        return result
 
 
     def parse_statement():
         if Parser.tokens.current == None:
             raise ValueError(Parser.ERROR)
-
+        
+        elif Parser.tokens.current.type == "IF":
+            return Parser.parse_if_else()
+        elif Parser.tokens.current.type == "WHILE":
+            return Parser.parse_while()
         elif Parser.tokens.current.type == "WORD":
             return Parser.parse_assignment()
-        elif Parser.tokens.current.type == "Print":
+        elif Parser.tokens.current.type == "PRINT":
             return Parser.parse_print()
         elif Parser.tokens.current.type == "BEGIN":
             return Parser.parse_statements()
         else: #verificar
-            return IntVal(0)
+            return NullNode()
     
 
     def parse_statements():
@@ -162,7 +264,7 @@ class Parser():
             raise ValueError(Parser.ERROR)
 
         elif Parser.tokens.current.type == "BEGIN":      
-            result = StmtsOp()
+            result = StatementsNode()
 
             Parser.tokens.next()
             result.set_child(Parser.parse_statement())
@@ -171,10 +273,11 @@ class Parser():
                 Parser.tokens.next()
                 result.set_child(Parser.parse_statement())
 
-
+     
             if Parser.tokens.current.type != "END":
                 raise ValueError(Parser.ERROR)
             
+            Parser.tokens.next()
             return result
 
         else:
@@ -187,7 +290,6 @@ class Parser():
         return 0
 
     def parse_program():
-        print("parse_program")
         if Parser.tokens.current == None:
             raise ValueError(Parser.ERROR)
 
@@ -198,15 +300,15 @@ class Parser():
                 if Parser.tokens.current.type == "STMT_FINISH":
                     result = Program()
 
-                    '''Parser.tokens.next()
-                    result.set_child(Parser.parse_vardec()) #0 n tem eval
+                    #Parser.tokens.next()
+                    #result.set_child(Parser.parse_vardec()) #0 n tem eval
                     
-                    Parser.tokens.next()
-                    result.set_child(Parser.parse_funcdec())'''
+                    #Parser.tokens.next()
+                    #result.set_child(Parser.parse_funcdec())
                     
                     Parser.tokens.next()
                     result.set_child(Parser.parse_statements())
-                    Parser.tokens.next()
+
                     if Parser.tokens.current == None or Parser.tokens.current.type != "DOT":
                         raise ValueError(Parser.ERROR)
 
