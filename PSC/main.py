@@ -8,7 +8,7 @@ def read_pascal(f):
 
 def main(origin):
     st = SymbolTable()
-    Parser.set_origin(origin)
+    Parser.set_origin(origin.lower())
     parse = Parser.parse()
     result = parse.eval(st)
 

@@ -5,7 +5,33 @@ class Tokenizer():
     def __init__(self):
         self.origin = "0"
         self.position = 0
-        self.reserved_words = ["BEGIN", "END", "Print", ":="]
+        self.res_words = {
+            "program":"PROGRAM",
+            "begin":"BEGIN",
+            "end":"END",
+            "print":"PRINT",
+            "if":"IF",
+            "then":"THEN",
+            "else":"ELSE",
+            "and":"AND",
+            "or":"OR",
+            "while":"WHILE",
+            "do":"DO",
+        }
+        self.single_char_tokens = {
+            "+":"PLUS",
+            "-":"MINUS",
+            "*":"MULT",
+            "/":"DIV",
+            "&":"AND",
+            "|":"OR",
+            "(":"OPEN_PAR",
+            ")":"CLOSE_PAR",
+            ";":"STMT_FINISH",
+            ".":"DOT",
+            "<":"LESS_THAN",
+            ">":"MORE_THAN",
+        }
         self.current = None
 
     def isnumber(self, token):
@@ -13,23 +39,18 @@ class Tokenizer():
     
     def isalphas(self, token):
         return token.isalpha()
-
-    def next(self):
-        self.current = None
-        aux = ""
-
-        #checks for commentary blocks and white spaces in no particular order, and ignores them
-        while True:
+    
+    def pre_processing(self):
+        is_dirty = True
+        while is_dirty:
             if self.position < len(self.origin):
+                
                 if self.origin[self.position] == " ":
-                    while self.origin[self.position] == " ":
-                        if self.position < len(self.origin)-1:
-                            self.position += 1
-                                
-                        else:
-                            self.position += 1
-                            break
-            
+                    self.position += 1
+                
+                elif self.origin[self.position] == "\n":
+                    self.position+=1
+                
                 elif self.origin[self.position] == "{":
                     while self.origin[self.position] != "}":
                         if self.position < len(self.origin)-1:
@@ -38,54 +59,26 @@ class Tokenizer():
                         else:
                             raise ValueError("Invalid token")
                     self.position += 1
-                
-                elif self.origin[self.position] == "\n":
-                    print("oi")
-                    self.position+=1
-            
-                else:
-                    break
-            
-            else:
-                break
-        
-        #check if its a valid token
-        if self.position < len(self.origin):
-            if self.origin[self.position] == "+":
-                self.current = Token("PLUS", None)
-                self.position += 1
-            
-            elif self.origin[self.position] == "-":
-                self.current = Token("MINUS", None)
-                self.position += 1
-            
-            elif self.origin[self.position] == "*":
-                self.current = Token("MULT", None)
-                self.position += 1
-            
-            elif self.origin[self.position] == "/":
-                self.current = Token("DIV", None)
-                self.position += 1 
-            
-            elif self.origin[self.position] == "(":
-                self.current = Token("OPEN_PAR", None)
-                self.position += 1 
-            
-            elif self.origin[self.position] == ")":
-                self.current = Token("CLOSE_PAR", None)
-                self.position += 1
-            
-            elif self.origin[self.position] == ";":
-                self.current = Token("STMT_FINISH", None)
-                self.position += 1
 
-            elif self.origin[self.position] == ".":
-                self.current = Token("DOT")
+                else:
+                    is_dirty = False
+
+    def next(self):
+        self.current = None
+        aux = ""
+
+        self.pre_processing()
+        
+        if self.position < len(self.origin):
+            
+            if self.origin[self.position] in self.single_char_tokens:
+                self.current = Token(self.single_char_tokens[self.origin[self.position]])
                 self.position += 1
+            
             
             elif self.origin[self.position] == ":":
                 if self.origin[self.position+1] == "=":
-                    self.current = Token("ASSIGN", None)
+                    self.current = Token("ASSIGN")
                     self.position += 2
                 else:
                     ValueError("Invalid token")
@@ -115,17 +108,13 @@ class Tokenizer():
                         self.position += 1
                         break
                 
-                if aux == "BEGIN":
-                    self.current = Token("BEGIN", None)
-                elif aux == "END":
-                    self.current = Token("END", None)
-                elif aux == "Print":
-                    self.current = Token("Print", None)
-                elif aux == "PROGRAM":
-                    self.current = Token("PROGRAM")
+                if aux in self.res_words:
+                    self.current = Token(self.res_words[aux])
+
                 else:
                     self.current = Token("WORD", aux)
+                
                 aux = ""
 
             else:
-                raise ValueError("Invalid token")
+                raise ValueError("String {} is an invalid token".format(self.origin[self.position]))
