@@ -4,7 +4,7 @@ BEGIN
     BEGIN
         BEGIN
 
-            Print(3);
+            Print(1-+-+-3);
             
             IF (2>3) THEN BEGIN 
                 Print(2); 
