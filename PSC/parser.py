@@ -63,7 +63,7 @@ class Parser():
         
         while Parser.tokens.current != None and Parser.tokens.current.type in Parser.term_ops:
             result_cp = result
-            
+            print(Parser.tokens.current.type)
             result = BinaryOp(Parser.tokens.current.type)
             
             Parser.tokens.next()
@@ -98,6 +98,7 @@ class Parser():
         
         while Parser.tokens.current != None and Parser.tokens.current.type in Parser.expression_rel_ops:
             result_cp = result
+            
             
             result = BinaryOp(Parser.tokens.current.type)
             
@@ -272,7 +273,6 @@ class Parser():
             while Parser.tokens.current.type == "STMT_FINISH":
                 Parser.tokens.next()
                 result.set_child(Parser.parse_statement())
-
      
             if Parser.tokens.current.type != "END":
                 raise ValueError(Parser.ERROR)

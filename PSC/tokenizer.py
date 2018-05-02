@@ -62,6 +62,8 @@ class Tokenizer():
 
                 else:
                     is_dirty = False
+            else:
+                is_dirty = False
 
     def next(self):
         self.current = None
