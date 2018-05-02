@@ -1,12 +1,14 @@
 PROGRAM teste;
-
+VAR
+    x: integer;
 BEGIN
     BEGIN
         BEGIN
-
-            Print(3);
+            x := 1;
+            Print(x);
             
-            IF (2>3) THEN BEGIN 
+            IF (2>3) THEN
+            BEGIN 
                 Print(2); 
             END;
         END
