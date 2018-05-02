@@ -15,9 +15,9 @@
 - [x] Variables
 - [x] Symbol Table
 - [x] Print
-- [ ] Boolean Operators
-- [ ] Conditional Statements
-- [ ] Loops
+- [x] Boolean Operators
+- [x] Conditional Statements
+- [x] Loops
 - [ ] Read
 - [ ] Variable Declaration
 - [ ] Types
