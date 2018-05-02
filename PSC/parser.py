@@ -14,8 +14,8 @@ from vardecnode import VarDecNode
 class Parser():
     ERROR = "Invalid token"
 
-    term_ops = ["MULT", "DIV"]
-    expression_ops = ["MINUS", "PLUS", "OR", "AND"]
+    term_ops = ["MULT", "DIV", "AND"]
+    expression_ops = ["MINUS", "PLUS", "OR"]
     expression_rel_ops = ["EQUAL", "MORE_THAN", "LESS_THAN"]
     tokens = Tokenizer()
 
@@ -64,7 +64,6 @@ class Parser():
         
         while Parser.tokens.current != None and Parser.tokens.current.type in Parser.term_ops:
             result_cp = result
-            print(Parser.tokens.current.type)
             result = BinaryOp(Parser.tokens.current.type)
             
             Parser.tokens.next()
@@ -113,12 +112,14 @@ class Parser():
     def parse_assignment():
         word = Parser.tokens.current.value
         
+        
         Parser.tokens.next()
 
         if Parser.tokens.current == None:
             raise ValueError(Parser.ERROR)
 
         elif Parser.tokens.current.type == "ASSIGN":
+            
             result = AssignerNode(_value=word)
             
             Parser.tokens.next()
@@ -152,6 +153,7 @@ class Parser():
 
     def parse_if_else():
         Parser.tokens.next()
+        
         
         if Parser.tokens.current == None:
             raise ValueError(Parser.ERROR)
@@ -189,6 +191,7 @@ class Parser():
 
                     else:
                         raise ValueError(Parser.ERROR)
+                
                 else:
                     raise ValueError(Parser.ERROR)
                 
@@ -286,6 +289,7 @@ class Parser():
     
     def parse_vardec():
         f_lines = True
+        result = NullNode()
 
         if Parser.tokens.current == None:
             raise ValueError(Parser.ERROR)
@@ -293,6 +297,7 @@ class Parser():
         if Parser.tokens.current.type == "VAR":
             result = VarDecNode()
             Parser.tokens.next()
+            
 
             while f_lines:
                 variables = []
@@ -315,29 +320,33 @@ class Parser():
                         Parser.tokens.next()
 
                         if Parser.tokens.current.type == "BOOL" or Parser.tokens.current.type == "INTEGER":
+                            
                             for var in variables:
+                                
+                                
                                 varnode = AssignerNode(_vartype=Parser.tokens.current.type, _value=var)
                                 result.set_child(varnode)
-
+                            
+                            Parser.tokens.next()
+                            
+                            if Parser.tokens.current.type == "STMT_FINISH":
+                                
                                 Parser.tokens.next()
 
-                                if Parser.tokens.current.type == "STMT_FINISH":
-                                    Parser.tokens.next()
+                                if Parser.tokens.current.type == "BEGIN":
+                                    
+                                    f_lines = False
+                            
 
-                                    if Parser.tokens.current.type == "BEGIN":
-                                        f_lines = False
-
-                                else:
-                                    raise ValueError(Parser.ERROR)
-
+                            else:
+                                raise ValueError(Parser.ERROR)
                         else:
                             raise ValueError(Parser.ERROR)
-
                     else:
                         raise ValueError(Parser.ERROR)
-
                 else:
                     raise ValueError(Parser.ERROR)
+        return result
 
     def parse_funcdec():
         return 0
@@ -354,14 +363,13 @@ class Parser():
                     result = Program()
 
                     Parser.tokens.next()
-                    result.set_child(Parser.parse_vardec()) #0 n tem eval
+                    result.set_child(Parser.parse_vardec())
                     
                     #Parser.tokens.next()
                     #result.set_child(Parser.parse_funcdec())
                     
-                    Parser.tokens.next()
                     result.set_child(Parser.parse_statements())
-                    print(Parser.tokens.current.type)
+                    
                     if Parser.tokens.current == None or Parser.tokens.current.type != "DOT":
                         raise ValueError(Parser.ERROR)
 

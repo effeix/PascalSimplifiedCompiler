@@ -1,20 +1,17 @@
 PROGRAM teste;
 VAR
-    x: integer;
+    x: int;
 BEGIN
     BEGIN
         BEGIN
-<<<<<<< HEAD
 
-            Print(1-+-+-3);
-=======
-            x := 1;
-            Print(x);
->>>>>>> 728b39e6a39ed8026d5c44301a829b867d724737
+            Print(1 and 3);
             
-            IF (2>3) THEN
+            IF (2<3) THEN
             BEGIN 
-                Print(2); 
+                x := 2;
+                print(x);
+                print(5000);
             END;
         END
     END

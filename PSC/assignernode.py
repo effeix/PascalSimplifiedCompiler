@@ -2,18 +2,18 @@ from node import Node
 
 class AssignerNode(Node):
     def __init__(self, _vartype=None, _value=None):
-        super().__init__(self)
+        self.value = _value
+        self.children = []
         self.vartype = _vartype
 
     def eval(self, st):
-        varname = self._value
-        vartype = self.vartype
-        val = self.children[0].eval(st)
+        if not self.vartype:
+            val = self.children[0].eval(st)
         
-        if self._vartype:
-            st.create_identifier(varname, vartype)
+        if self.vartype:
+            st.create_identifier(self.value, self.vartype)
         else:
-            st.set_identifier(varname, val)
+            st.set_identifier(self.value, val)
 
 
 

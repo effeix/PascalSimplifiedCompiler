@@ -19,7 +19,7 @@ class Tokenizer():
             "do":"DO",
             "var":"VAR",
             "bool":"BOOL",
-            "integer":"INTEGER"
+            "int":"INTEGER"
         }
         self.single_char_tokens = {
             "+":"PLUS",
@@ -123,7 +123,5 @@ class Tokenizer():
                 aux = ""
 
             else:
-                print(self.current.type)
                 raise ValueError("String {} is an invalid token".format(self.origin[self.position]))
 
-            print(self.current.type)

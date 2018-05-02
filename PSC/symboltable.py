@@ -2,20 +2,20 @@ class SymbolTable():
     def __init__(self):
         self.table = {}
 
-    def get_identifier(self, _id):
-        if not _id in self.table.keys():
-            raise KeyError(f'{_id} not in SymbolTable')
+    def get_identifier(self, idx):
+        if not idx in self.table.keys():
+            raise KeyError(f'{idx} not in SymbolTable')
         
-        return self.table[_id][0]
+        return self.table[idx][1]
 
-    def create_identifier(self, _id, _type):
-    	if _id not in self.table:
-    		self.table[_id] = [_type]
+    def create_identifier(self, idx, _type):
+    	if idx not in self.table:
+    		self.table[idx] = [_type]
     	else:
-    		raise KeyError(f"Variable already exists: {_id}")
+    		raise KeyError(f"Variable already exists: {idx}")
 
-    def set_identifier(self, _id, _value):        
-        if _id in self.table:
-        	self.table[_id].append(_value)
+    def set_identifier(self, idx, _value):        
+        if idx in self.table:
+        	self.table[idx].append(_value)
         else:
-        	raise KeyError(f"Variable is not defined: {_id}")
+        	raise KeyError(f"Variable is not defined: {idx}")
