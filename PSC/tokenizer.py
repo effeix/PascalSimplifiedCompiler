@@ -17,6 +17,9 @@ class Tokenizer():
             "or":"OR",
             "while":"WHILE",
             "do":"DO",
+            "var":"VAR",
+            "bool":"BOOL",
+            "integer":"INTEGER"
         }
         self.single_char_tokens = {
             "+":"PLUS",
@@ -31,6 +34,7 @@ class Tokenizer():
             ".":"DOT",
             "<":"LESS_THAN",
             ">":"MORE_THAN",
+            ",":"COMMA",
         }
         self.current = None
 
@@ -76,14 +80,14 @@ class Tokenizer():
             if self.origin[self.position] in self.single_char_tokens:
                 self.current = Token(self.single_char_tokens[self.origin[self.position]])
                 self.position += 1
-            
-            
+
             elif self.origin[self.position] == ":":
                 if self.origin[self.position+1] == "=":
                     self.current = Token("ASSIGN")
                     self.position += 2
                 else:
-                    ValueError("Invalid token")
+                    self.current = Token("COLON")
+                    self.position += 1
 
             elif self.isnumber(self.origin[self.position]):
                 while self.isnumber(self.origin[self.position]):
@@ -119,4 +123,7 @@ class Tokenizer():
                 aux = ""
 
             else:
+                print(self.current.type)
                 raise ValueError("String {} is an invalid token".format(self.origin[self.position]))
+
+            print(self.current.type)

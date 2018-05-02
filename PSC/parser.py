@@ -9,6 +9,7 @@ from nullnode import NullNode
 from condnode import CondNode
 from loopnode import LoopNode
 from program import Program
+from vardecnode import VarDecNode
 
 class Parser():
     ERROR = "Invalid token"
@@ -118,7 +119,7 @@ class Parser():
             raise ValueError(Parser.ERROR)
 
         elif Parser.tokens.current.type == "ASSIGN":
-            result = AssignerNode(word)
+            result = AssignerNode(_value=word)
             
             Parser.tokens.next()
             result.set_child(Parser.parse_expression())
@@ -284,7 +285,59 @@ class Parser():
             raise ValueError(Parser.ERROR)
     
     def parse_vardec():
-        return 0
+        f_lines = True
+
+        if Parser.tokens.current == None:
+            raise ValueError(Parser.ERROR)
+
+        if Parser.tokens.current.type == "VAR":
+            result = VarDecNode()
+            Parser.tokens.next()
+
+            while f_lines:
+                variables = []
+
+                if Parser.tokens.current.type == "WORD":
+                    variables.append(Parser.tokens.current.value)
+                    Parser.tokens.next()
+
+                    while Parser.tokens.current.type == "COMMA":
+                        Parser.tokens.next()
+
+                        if Parser.tokens.current.type == "WORD":
+                            variables.append(Parser.tokens.current.value)
+                            Parser.tokens.next()
+
+                        else:
+                            raise ValueError(Parser.ERROR)
+
+                    if Parser.tokens.current.type == "COLON":
+                        Parser.tokens.next()
+
+                        if Parser.tokens.current.type == "BOOL" or Parser.tokens.current.type == "INTEGER":
+                            for var in variables:
+                                varnode = AssignerNode(_vartype=Parser.tokens.current.type, _value=var)
+                                result.set_child(varnode)
+
+                                Parser.tokens.next()
+
+                                if Parser.tokens.current.type == "STMT_FINISH":
+                                    Parser.tokens.next()
+
+                                    if Parser.tokens.current.type == "BEGIN":
+                                        f_lines = False
+
+                                else:
+                                    raise ValueError(Parser.ERROR)
+
+                        else:
+                            raise ValueError(Parser.ERROR)
+
+                    else:
+                        raise ValueError(Parser.ERROR)
+
+                else:
+                    raise ValueError(Parser.ERROR)
 
     def parse_funcdec():
         return 0
@@ -300,15 +353,15 @@ class Parser():
                 if Parser.tokens.current.type == "STMT_FINISH":
                     result = Program()
 
-                    #Parser.tokens.next()
-                    #result.set_child(Parser.parse_vardec()) #0 n tem eval
+                    Parser.tokens.next()
+                    result.set_child(Parser.parse_vardec()) #0 n tem eval
                     
                     #Parser.tokens.next()
                     #result.set_child(Parser.parse_funcdec())
                     
                     Parser.tokens.next()
                     result.set_child(Parser.parse_statements())
-
+                    print(Parser.tokens.current.type)
                     if Parser.tokens.current == None or Parser.tokens.current.type != "DOT":
                         raise ValueError(Parser.ERROR)
 
