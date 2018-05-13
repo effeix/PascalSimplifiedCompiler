@@ -125,5 +125,5 @@ class Tokenizer():
                 aux = ""
 
             else:
-                raise ValueError("String {} is an invalid token".format(self.origin[self.position]))
+                raise ValueError(f"invalid token {self.origin[self.position]}")
 
