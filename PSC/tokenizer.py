@@ -95,13 +95,12 @@ class Tokenizer():
 
             elif self._isnumber(self.origin[self.position]):
                 while self._isnumber(self.origin[self.position]):
+                    
                     aux += self.origin[self.position]
                     
-                    if self.position < len(self.origin)-1:
-                        self.position += 1
-                    
-                    else:
-                        self.position += 1
+                    self.position += 1
+
+                    if self.position >= len(self.origin)-1:
                         break
                 
                 self.current = Token("INT", int(aux))
@@ -109,13 +108,12 @@ class Tokenizer():
             
             elif self._isalpha(self.origin[self.position]):
                 while self._isalpha(self.origin[self.position]) or self.origin[self.position] == "_":
+                    
                     aux += self.origin[self.position]
 
-                    if self.position < len(self.origin)-1:
-                        self.position += 1
-                    
-                    else:
-                        self.position += 1
+                    self.position += 1
+
+                    if self.position >= len(self.origin)-1:
                         break
                 
                 if aux in RESERVED:
