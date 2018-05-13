@@ -39,13 +39,13 @@ class Tokenizer():
         }
         self.current = None
 
-    def isnumber(self, token):
+    def _isnumber(self, token):
         return token.isdigit()
     
-    def isalphas(self, token):
+    def _isalpha(self, token):
         return token.isalpha()
     
-    def ignore_extras(self):
+    def _ignore_extras(self):
         is_dirty = True
         while is_dirty:
             if self.position < len(self.origin):
@@ -75,7 +75,7 @@ class Tokenizer():
         self.current = None
         aux = ""
 
-        self.ignore_extras()
+        self._ignore_extras()
         
         if self.position < len(self.origin):
             
@@ -91,8 +91,8 @@ class Tokenizer():
                     self.current = Token("COLON")
                     self.position += 1
 
-            elif self.isnumber(self.origin[self.position]):
-                while self.isnumber(self.origin[self.position]):
+            elif self._isnumber(self.origin[self.position]):
+                while self._isnumber(self.origin[self.position]):
                     aux += self.origin[self.position]
                     
                     if self.position < len(self.origin)-1:
@@ -105,8 +105,8 @@ class Tokenizer():
                 self.current = Token("INT", int(aux))
                 aux = ""
             
-            elif self.isalphas(self.origin[self.position]):
-                while self.isalphas(self.origin[self.position]) or self.origin[self.position] == "_":
+            elif self._isalpha(self.origin[self.position]):
+                while self._isalpha(self.origin[self.position]) or self.origin[self.position] == "_":
                     aux += self.origin[self.position]
 
                     if self.position < len(self.origin)-1:
