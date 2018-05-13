@@ -1,42 +1,44 @@
 from token import Token
 
+RESERVED = {
+    "program": "PROGRAM",
+    "begin": "BEGIN",
+    "end": "END",
+    "print": "PRINT",
+    "if": "IF",
+    "then": "THEN",
+    "else": "ELSE",
+    "and": "AND",
+    "or": "OR",
+    "while": "WHILE",
+    "do": "DO",
+    "var": "VAR",
+    "bool": "BOOL",
+    "int": "INTEGER"
+}
+
+SINGLE_CHAR = {
+    "+": "PLUS",
+    "-": "MINUS",
+    "*": "MULT",
+    "/": "DIV",
+    "&": "AND",
+    "|": "OR",
+    "(": "OPEN_PAR",
+    ")": "CLOSE_PAR",
+    ";": "STMT_FINISH",
+    ".": "DOT",
+    "<": "LESS_THAN",
+    ">": "MORE_THAN",
+    ",": "COMMA",
+}
+
 class Tokenizer():
 
     def __init__(self):
         self.origin = "0"
         self.position = 0
         self.line_number = 0
-        self.res_words = {
-            "program":"PROGRAM",
-            "begin":"BEGIN",
-            "end":"END",
-            "print":"PRINT",
-            "if":"IF",
-            "then":"THEN",
-            "else":"ELSE",
-            "and":"AND",
-            "or":"OR",
-            "while":"WHILE",
-            "do":"DO",
-            "var":"VAR",
-            "bool":"BOOL",
-            "int":"INTEGER"
-        }
-        self.single_char_tokens = {
-            "+":"PLUS",
-            "-":"MINUS",
-            "*":"MULT",
-            "/":"DIV",
-            "&":"AND",
-            "|":"OR",
-            "(":"OPEN_PAR",
-            ")":"CLOSE_PAR",
-            ";":"STMT_FINISH",
-            ".":"DOT",
-            "<":"LESS_THAN",
-            ">":"MORE_THAN",
-            ",":"COMMA",
-        }
         self.current = None
 
     def _isnumber(self, token):
@@ -79,8 +81,8 @@ class Tokenizer():
         
         if self.position < len(self.origin):
             
-            if self.origin[self.position] in self.single_char_tokens:
-                self.current = Token(self.single_char_tokens[self.origin[self.position]])
+            if self.origin[self.position] in SINGLE_CHAR:
+                self.current = Token(SINGLE_CHAR[self.origin[self.position]])
                 self.position += 1
 
             elif self.origin[self.position] == ":":
@@ -116,8 +118,8 @@ class Tokenizer():
                         self.position += 1
                         break
                 
-                if aux in self.res_words:
-                    self.current = Token(self.res_words[aux])
+                if aux in RESERVED:
+                    self.current = Token(RESERVED[aux])
 
                 else:
                     self.current = Token("WORD", aux)
