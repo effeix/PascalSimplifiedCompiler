@@ -88,7 +88,7 @@ class Parser():
         
         #GAMBIARRA, REMOVER
         #se eu to acabando a conta n tem um close parents e tem outro elemento que nao eh none
-        #if Parser.tokens.current != None and Parser.tokens.current.type != "CLOSE_PAR" and Parser.tokens.current.type != "STMT_FINISH":
+        #if Parser.tokens.current != None and Parser.tokens.current.type != "CLOSE_PAR" and Parser.tokens.current.type != "SEMICOLON":
         #    raise ValueError(Parser.ERROR)
             
         return result
@@ -274,7 +274,7 @@ class Parser():
             Parser.tokens.next()
             result.set_child(Parser.parse_statement())
 
-            while Parser.tokens.current.type == "STMT_FINISH":
+            while Parser.tokens.current.type == "SEMICOLON":
                 Parser.tokens.next()
                 result.set_child(Parser.parse_statement())
      
@@ -329,7 +329,7 @@ class Parser():
                             
                             Parser.tokens.next()
                             
-                            if Parser.tokens.current.type == "STMT_FINISH":
+                            if Parser.tokens.current.type == "SEMICOLON":
                                 
                                 Parser.tokens.next()
 
@@ -353,13 +353,13 @@ class Parser():
 
     def parse_program():
         if Parser.tokens.current == None:
-            raise ValueError(Parser.ERROR)
+            raise ValueError("File cannot be empty")
 
         if Parser.tokens.current.type == "PROGRAM":
             Parser.tokens.next()
             if Parser.tokens.current.type == "IDENTIFIER":
                 Parser.tokens.next()
-                if Parser.tokens.current.type == "STMT_FINISH":
+                if Parser.tokens.current.type == "SEMICOLON":
                     result = Program()
 
                     Parser.tokens.next()

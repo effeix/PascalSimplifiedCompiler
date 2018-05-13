@@ -26,7 +26,7 @@ SINGLE_CHAR = {
     "|": "OR",
     "(": "OPEN_PAR",
     ")": "CLOSE_PAR",
-    ";": "STMT_FINISH",
+    ";": "SEMICOLON",
     ".": "DOT",
     "<": "LESS_THAN",
     ">": "MORE_THAN",
