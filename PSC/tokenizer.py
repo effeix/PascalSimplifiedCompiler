@@ -5,6 +5,7 @@ class Tokenizer():
     def __init__(self):
         self.origin = "0"
         self.position = 0
+        self.line_number = 0
         self.res_words = {
             "program":"PROGRAM",
             "begin":"BEGIN",
@@ -54,6 +55,7 @@ class Tokenizer():
                 
                 elif self.origin[self.position] == "\n":
                     self.position+=1
+                    self.line_number += 1
                 
                 elif self.origin[self.position] == "{":
                     while self.origin[self.position] != "}":
