@@ -120,7 +120,7 @@ class Tokenizer():
                     self.current = Token(RESERVED[aux])
 
                 else:
-                    self.current = Token("WORD", aux)
+                    self.current = Token("IDENTIFIER", aux)
                 
                 aux = ""
 

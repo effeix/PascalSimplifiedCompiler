@@ -50,7 +50,7 @@ class Parser():
 
             return result
         
-        elif Parser.tokens.current.type == "WORD":
+        elif Parser.tokens.current.type == "IDENTIFIER":
             result = IdentifierNode(Parser.tokens.current.value)
 
             Parser.tokens.next()
@@ -254,7 +254,7 @@ class Parser():
             return Parser.parse_if_else()
         elif Parser.tokens.current.type == "WHILE":
             return Parser.parse_while()
-        elif Parser.tokens.current.type == "WORD":
+        elif Parser.tokens.current.type == "IDENTIFIER":
             return Parser.parse_assignment()
         elif Parser.tokens.current.type == "PRINT":
             return Parser.parse_print()
@@ -302,14 +302,14 @@ class Parser():
             while f_lines:
                 variables = []
 
-                if Parser.tokens.current.type == "WORD":
+                if Parser.tokens.current.type == "IDENTIFIER":
                     variables.append(Parser.tokens.current.value)
                     Parser.tokens.next()
 
                     while Parser.tokens.current.type == "COMMA":
                         Parser.tokens.next()
 
-                        if Parser.tokens.current.type == "WORD":
+                        if Parser.tokens.current.type == "IDENTIFIER":
                             variables.append(Parser.tokens.current.value)
                             Parser.tokens.next()
 
@@ -357,7 +357,7 @@ class Parser():
 
         if Parser.tokens.current.type == "PROGRAM":
             Parser.tokens.next()
-            if Parser.tokens.current.type == "WORD":
+            if Parser.tokens.current.type == "IDENTIFIER":
                 Parser.tokens.next()
                 if Parser.tokens.current.type == "STMT_FINISH":
                     result = Program()
