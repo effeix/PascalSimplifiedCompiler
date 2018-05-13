@@ -44,7 +44,7 @@ class Tokenizer():
     def isalphas(self, token):
         return token.isalpha()
     
-    def pre_processing(self):
+    def ignore_extras(self):
         is_dirty = True
         while is_dirty:
             if self.position < len(self.origin):
@@ -73,7 +73,7 @@ class Tokenizer():
         self.current = None
         aux = ""
 
-        self.pre_processing()
+        self.ignore_extras()
         
         if self.position < len(self.origin):
             
