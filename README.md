@@ -60,4 +60,4 @@ type = "bool" | "integer";
 ### Syntactic Diagram
 The syntactic diagram is a visual representation of the EBNF, describing the algorithm used by the compiler. If you pay close attention to the code, you will se the similarities between the diagram and the algorithm. Below is the syntactic diagram for this compiler:
 
-<p align="center">(under construction)</p>
+![Imgur](https://i.imgur.com/XJMtgGA.png)
