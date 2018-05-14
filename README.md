@@ -1,8 +1,9 @@
 # Pascal Simplified Compiler
 
-### Features (in order of implementation)
+### Features
+###### Features marked with "!" are currently being implemented
 - [x] Lexical Analysis
-- [x] Syntatic Analysis
+- [x] Syntactic Analysis
 - [x] Addition / Subtraction
 - [x] Multiplication / Division
 - [x] Comments
@@ -18,19 +19,18 @@
 - [x] Boolean Operators
 - [x] Conditional Statements
 - [x] Loops
-- [ ] Read
+- [ ] Read !
 - [x] Variable Declaration
 - [x] Types
-- [ ] Type checking
+- [ ] Type checking !
 - [x] Semantic Errors
-- [ ] Functions
-- [ ] Function Arguments
-- [ ] Variable Scopes
+- [ ] Functions !
+- [ ] Function Arguments !
+- [ ] Variable Scopes !
 - [ ] Assembler
 
 ### EBNF
-An EBNF (<b>E</b>xtended <b>B</b>ackus-<b>N</b>aur <b>F</b>orm) is a sequence of statements describing a [Context-Free Grammar](https://en.wikipedia.org/wiki/Context-free_grammar). It is used to represent a formal language or programming language and as the name sugests, is an extension to the original [BNF (<b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).
-###### Reference: [Extended Backus-Naur Form on Wikipedia](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)
+An [EBNF (<b>E</b>xtended <b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) is a sequence of statements describing a [Context-Free Grammar](https://en.wikipedia.org/wiki/Context-free_grammar). It is used to represent a formal language or programming language and, as the name sugests, is an extension to the original [BNF (<b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).
 
 Below is the EBNF for this compiler:
 ```ebnf
@@ -56,3 +56,8 @@ letter = a .. z | A .. Z;
 digit = 0 .. 9;
 type = "bool" | "integer";
 ```
+
+### Syntactic Diagram
+The syntactic diagram is a visual representation of the EBNF, describing the algorithm used by the compiler. If you pay close attention to the code, you will se the similarities between the diagram and the algorithm. Below is the syntactic diagram for this compiler:
+
+<p align="center">(under construction)</p>
