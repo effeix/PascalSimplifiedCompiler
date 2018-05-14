@@ -1,10 +1,11 @@
 from parser import Parser
-from binaryop import BinaryOp
 from symboltable import SymbolTable
+
 
 def read_pascal(f):
     with open(f, 'r') as ff:
         return ff.read().rstrip("\n")
+
 
 def main(origin):
     st = SymbolTable()
@@ -12,6 +13,10 @@ def main(origin):
     parse = Parser.parse()
     result = parse.eval(st)
 
+
 if __name__ == "__main__":
-    origin = read_pascal("hello.pas")
+    filename = input("Filename (.pas): ").lower()
+    if not filename.endswith(".pas"):
+        filename = filename + ".pas"
+    origin = read_pascal(filename)
     main(origin)
