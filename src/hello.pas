@@ -9,6 +9,8 @@ BEGIN
 
             y := 3;
             test := 1 + 2;
+            x := Read();
+            Print(x);
 
             IF (y < 3) THEN
                 BEGIN
