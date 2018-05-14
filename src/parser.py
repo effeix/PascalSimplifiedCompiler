@@ -6,6 +6,7 @@ from loopnode import LoopNode
 from nullnode import NullNode
 from printnode import PrintNode
 from program import Program
+from readnode import ReadNode
 from statementsnode import StatementsNode
 from tokenizer import Tokenizer
 from unaryop import UnaryOp
@@ -94,11 +95,6 @@ class Parser():
             result.set_child(result_cp)
             result.set_child(Parser.parse_term())
 
-        # GAMBIARRA, REMOVER
-        # se eu to acabando a conta n tem um close parents e tem outro elemento que nao eh none
-        # if Parser.tokens.current != None and Parser.tokens.current.type != "CLOSE_PAR" and Parser.tokens.current.type != "SEMICOLON":
-        #    raise ValueError(Parser.ERROR)
-
         return result
 
     def parse_rel_exp():
@@ -131,11 +127,32 @@ class Parser():
 
             Parser.tokens.next()
 
-            result.set_child(Parser.parse_expression())
+            if Parser.tokens.current.type == "READ":
+                result.set_child(Parser.parse_read())
+            else:
+                result.set_child(Parser.parse_expression())
 
-            return result
         else:
             raise ValueError(Parser.ERROR)
+
+        return result
+
+    def parse_read():
+        Parser.tokens.next()
+
+        if Parser.tokens.current.type == "OPEN_PAR":
+            Parser.tokens.next()
+
+            if Parser.tokens.current.type == "CLOSE_PAR":
+                result = ReadNode()
+                Parser.tokens.next()
+
+            else:
+                raise ValueError(f"Expecting closing parenthesis. Got: {Parser.tokens.current.type}")
+        else:
+            raise ValueError(f"Expecting opening parenthesis. Got: {Parser.tokens.current.type}")
+
+        return result
 
     def parse_print():
         Parser.tokens.next()

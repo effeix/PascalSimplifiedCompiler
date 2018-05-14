@@ -19,7 +19,7 @@
 - [x] Boolean Operators
 - [x] Conditional Statements
 - [x] Loops
-- [ ] Read !
+- [x] Read
 - [x] Variable Declaration
 - [x] Types
 - [ ] Type checking !
@@ -27,7 +27,7 @@
 - [ ] Functions !
 - [ ] Function Arguments !
 - [ ] Variable Scopes !
-- [ ] Assembler
+- [ ] Code Generation
 
 ### EBNF
 An [EBNF (<b>E</b>xtended <b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) is a sequence of statements describing a [Context-Free Grammar](https://en.wikipedia.org/wiki/Context-free_grammar). It is used to represent a formal language or programming language and, as the name sugests, is an extension to the original [BNF (<b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).
@@ -60,4 +60,4 @@ type = "bool" | "integer";
 ### Syntactic Diagram
 The syntactic diagram is a visual representation of the EBNF, describing the algorithm used by the compiler. If you pay close attention to the code, you will se the similarities between the diagram and the algorithm. Below is the syntactic diagram for this compiler:
 
-![Imgur](https://i.imgur.com/XJMtgGA.png)
+![Imgur](https://i.imgur.com/lDRguyD.png)
