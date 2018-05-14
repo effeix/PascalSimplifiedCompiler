@@ -35,9 +35,9 @@ An [EBNF (<b>E</b>xtended <b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wik
 Below is the EBNF for this compiler:
 ```ebnf
 program = "program", identifier, ";", block, ".";
-block = [varblock], [funcblock], statements;
+block = ["var", varblock], [funcblock], statements;
 var_declaration = identifier, {",", identifier}, ":", type;
-varblock = "var", var_declaration, {";", var_declaration};
+varblock = var_declaration, {";", var_declaration};
 funcblock = "function", identifier, "(", {var_declaration}, ")", ":", type, ";", block;
 statements = "begin", statement, {";", statement}, [";"], "end";
 statement = attribution | statements | print | if | while;
