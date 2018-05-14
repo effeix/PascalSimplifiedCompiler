@@ -1,18 +1,30 @@
 PROGRAM teste;
+
 VAR
-    x: int;
+    x, y, z: int;
+    test: bool;
 BEGIN
     BEGIN
         BEGIN
 
-            Print(1 and 3);
-            
-            IF (2<3) THEN
-            BEGIN 
-                x := 2;
-                print(x);
-                print(5000);
-            END;
+            y := 3;
+            test := 1 + 2;
+
+            IF (y < 3) THEN
+                BEGIN
+                    x := not 1;
+                    Print(x);
+                END
+            ELSE
+                BEGIN
+                    x := not 2;
+                    Print(test);
+                END;
+
+            WHILE (y < 3) DO
+                BEGIN
+                    Print(x);
+                END
         END
     END
 END.

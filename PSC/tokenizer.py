@@ -1,37 +1,40 @@
 from token import Token
 
 RESERVED = {
-    "program": "PROGRAM",
-    "begin": "BEGIN",
-    "end": "END",
-    "print": "PRINT",
-    "if": "IF",
-    "then": "THEN",
-    "else": "ELSE",
     "and": "AND",
-    "or": "OR",
-    "while": "WHILE",
-    "do": "DO",
-    "var": "VAR",
+    "begin": "BEGIN",
     "bool": "BOOL",
-    "int": "INTEGER"
+    "do": "DO",
+    "else": "ELSE",
+    "end": "END",
+    "false": "FALSE",
+    "if": "IF",
+    "int": "INTEGER",
+    "not": "NOT",
+    "or": "OR",
+    "print": "PRINT",
+    "program": "PROGRAM",
+    "read": "READ",
+    "then": "THEN",
+    "true": "TRUE",
+    "var": "VAR",
+    "while": "WHILE"
 }
 
 SINGLE_CHAR = {
-    "+": "PLUS",
-    "-": "MINUS",
-    "*": "MULT",
-    "/": "DIV",
-    "&": "AND",
-    "|": "OR",
     "(": "OPEN_PAR",
     ")": "CLOSE_PAR",
-    ";": "SEMICOLON",
+    "*": "MULT",
+    "+": "PLUS",
+    ",": "COMMA",
+    "-": "MINUS",
     ".": "DOT",
+    "/": "DIV",
+    ";": "SEMICOLON",
     "<": "LESS_THAN",
     ">": "MORE_THAN",
-    ",": "COMMA",
 }
+
 
 class Tokenizer():
 
@@ -43,27 +46,27 @@ class Tokenizer():
 
     def _isnumber(self, token):
         return token.isdigit()
-    
+
     def _isalpha(self, token):
         return token.isalpha()
-    
+
     def _ignore_extras(self):
         is_dirty = True
         while is_dirty:
             if self.position < len(self.origin):
-                
+
                 if self.origin[self.position] == " ":
                     self.position += 1
-                
+
                 elif self.origin[self.position] == "\n":
                     self.position+=1
                     self.line_number += 1
-                
+
                 elif self.origin[self.position] == "{":
                     while self.origin[self.position] != "}":
                         if self.position < len(self.origin)-1:
                             self.position += 1
-                            
+
                         else:
                             raise ValueError("Invalid token")
                     self.position += 1
@@ -78,9 +81,9 @@ class Tokenizer():
         aux = ""
 
         self._ignore_extras()
-        
+
         if self.position < len(self.origin):
-            
+
             if self.origin[self.position] in SINGLE_CHAR:
                 self.current = Token(SINGLE_CHAR[self.origin[self.position]])
                 self.position += 1
@@ -95,35 +98,34 @@ class Tokenizer():
 
             elif self._isnumber(self.origin[self.position]):
                 while self._isnumber(self.origin[self.position]):
-                    
+
                     aux += self.origin[self.position]
-                    
+
                     self.position += 1
 
                     if self.position >= len(self.origin)-1:
                         break
-                
+
                 self.current = Token("INT", int(aux))
                 aux = ""
-            
+
             elif self._isalpha(self.origin[self.position]):
                 while self._isalpha(self.origin[self.position]) or self.origin[self.position] == "_":
-                    
+
                     aux += self.origin[self.position]
 
                     self.position += 1
 
                     if self.position >= len(self.origin)-1:
                         break
-                
+
                 if aux in RESERVED:
                     self.current = Token(RESERVED[aux])
 
                 else:
                     self.current = Token("IDENTIFIER", aux)
-                
+
                 aux = ""
 
             else:
                 raise ValueError(f"invalid token {self.origin[self.position]}")
-

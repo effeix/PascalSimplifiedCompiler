@@ -14,6 +14,4 @@ def main(origin):
 
 if __name__ == "__main__":
     origin = read_pascal("hello.pas")
-
-
     main(origin)

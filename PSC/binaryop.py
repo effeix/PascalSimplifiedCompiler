@@ -1,37 +1,56 @@
 from node import Node
 
 class BinaryOp(Node):
+
+    def _sametype(self, a, b):
+        return (isinstance(a, bool) and isinstance(b, bool)) \
+            or (isinstance(a, int) and isinstance(b, int))
+
     def eval(self, st):
+
         if self.children:
-            result_a = self.children[0].eval(st)
-            result_b = self.children[1].eval(st)  
+            a = self.children[0].eval(st)
+            b = self.children[1].eval(st)
 
         if self.value == "PLUS":
-            return result_a + result_b
+            print(a)
+            print(isinstance(a, int))
+            if not self._sametype(a, b):
+                raise ValueError("Variables must be of same type")
+            if isinstance(a, int):
+                return a + b
+            elif isinstance(a, bool):
+                return bool(a + b)
 
         elif self.value == "MINUS":
-            return result_a - result_b
+            return a - b
 
         elif self.value == "MULT":
-            return result_a * result_b
+            return a * b
 
         elif self.value == "DIV":
-            return result_a // result_b
-        
+            return a // b
+
         elif self.value == "AND":
-            return result_a and result_b
-        
+            return a and b
+
         elif self.value == "OR":
-            return result_a or result_b
-        
+            return a or b
+
         elif self.value == "MORE_THAN":
-            return result_a > result_b
-        
+            return a > b
+
         elif self.value == "LESS_THAN":
-            return result_a < result_b
+            return a < b
 
         elif self.value == "EQUAL":
-            return result_a == result_b
+            return a == b
+
+        elif self.value == "TRUE":
+            return True
+
+        elif self.value == "FALSE":
+            return False
 
         else:
             return self.value
