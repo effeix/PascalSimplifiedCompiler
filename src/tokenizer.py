@@ -3,7 +3,7 @@ from token import Token
 RESERVED = {
     "and": "AND",
     "begin": "BEGIN",
-    "boolean": "BOOL",
+    "boolean": "BOOLEAN",
     "do": "DO",
     "else": "ELSE",
     "end": "END",
@@ -11,7 +11,7 @@ RESERVED = {
     "integer": "INTEGER",
     "not": "NOT",
     "or": "OR",
-    "print": "PRINT",
+    "write": "WRITE",
     "program": "PROGRAM",
     "read": "READ",
     "then": "THEN",
@@ -130,6 +130,8 @@ class Tokenizer():
                     self.current = Token("IDENTIFIER", aux)
 
                 aux = ""
+
+            
 
             else:
                 raise ValueError(f"invalid token {self.origin[self.position]}")

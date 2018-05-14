@@ -4,22 +4,20 @@ VAR
     x, y, z: integer;
     test: boolean;
 BEGIN
+    x := 30;
+    y:= x - 15;
+
+    write(10 and 20);
+
+    WHILE (y > 2) DO
     BEGIN
-        BEGIN
+        x := x + 2;
+        write(x);
+        y := y - 2;
+    END;
 
-            x:=30;
-            y:=x-15;
-
-            while (y > (10 or 20)) do begin
-                x:= x+2;
-                print(x);
-                y:= y-2;
-            end;
-
-            if (x > 1) then
-            begin
-                print(not(not x));
-            end;
-        END
-    END
+    IF (x > 1) THEN
+    BEGIN
+        write(not(not x));
+    END;
 END.

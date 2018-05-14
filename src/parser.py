@@ -4,13 +4,16 @@ from condnode import CondNode
 from identifiernode import IdentifierNode
 from loopnode import LoopNode
 from nullnode import NullNode
-from printnode import PrintNode
+from writenode import WriteNode
 from program import Program
 from readnode import ReadNode
 from statementsnode import StatementsNode
 from tokenizer import Tokenizer
 from unaryop import UnaryOp
 from vardecnode import VarDecNode
+from intval import IntVal
+from boolval import BoolVal
+
 
 
 class Parser():
@@ -19,7 +22,6 @@ class Parser():
     term_ops = ["MULT", "DIV", "AND"]
     expression_ops = ["MINUS", "PLUS", "OR", "NOT"]
     expression_rel_ops = ["EQUAL", "MORE_THAN", "LESS_THAN"]
-    type_ops = ["INT","BOOL"]
 
     tokens = Tokenizer()
 
@@ -41,8 +43,15 @@ class Parser():
             Parser.tokens.next()
             return expr
 
-        elif Parser.tokens.current.type in Parser.type_ops: #int or bool
-            result = BinaryOp(Parser.tokens.current.value)
+        elif Parser.tokens.current.type == "INT": 
+            result = IntVal(Parser.tokens.current.value)
+
+            Parser.tokens.next()
+
+            return result
+        
+        elif Parser.tokens.current.type == "BOOL": 
+            result = BoolVal(Parser.tokens.current.value)
 
             Parser.tokens.next()
 
@@ -133,6 +142,7 @@ class Parser():
                 result.set_child(Parser.parse_expression())
 
         else:
+            print(Parser.tokens.current.type)
             raise ValueError(Parser.ERROR)
 
         return result
@@ -154,14 +164,14 @@ class Parser():
 
         return result
 
-    def parse_print():
+    def parse_write():
         Parser.tokens.next()
 
         if Parser.tokens.current is None:
             raise ValueError(Parser.ERROR)
 
         elif Parser.tokens.current.type == "OPEN_PAR":
-            result = PrintNode()
+            result = WriteNode()
 
             Parser.tokens.next()
             result.set_child(Parser.parse_expression())
@@ -255,8 +265,8 @@ class Parser():
             return Parser.parse_while()
         elif Parser.tokens.current.type == "IDENTIFIER":
             return Parser.parse_assignment()
-        elif Parser.tokens.current.type == "PRINT":
-            return Parser.parse_print()
+        elif Parser.tokens.current.type == "WRITE":
+            return Parser.parse_write()
         elif Parser.tokens.current.type == "BEGIN":
             return Parser.parse_statements()
         else:
@@ -315,7 +325,7 @@ class Parser():
                     if Parser.tokens.current.type == "COLON":
                         Parser.tokens.next()
 
-                        if Parser.tokens.current.type == "BOOL" or Parser.tokens.current.type == "INTEGER":
+                        if Parser.tokens.current.type == "BOOLEAN" or Parser.tokens.current.type == "INTEGER":
 
                             for var in variables:
                                 varnode = AssignerNode(_vartype=Parser.tokens.current.type, _value=var)

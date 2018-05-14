@@ -1,11 +1,6 @@
 from node import Node
 
 class BinaryOp(Node):
-
-    def _sametype(self, a, b):
-        return (isinstance(a, bool) and isinstance(b, bool)) \
-            or (isinstance(a, int) and isinstance(b, int))
-
     def eval(self, st):
 
         if self.children:
@@ -13,24 +8,31 @@ class BinaryOp(Node):
             b = self.children[1].eval(st)
 
         if self.value == "PLUS":
-            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
-                raise ValueError("Variables must be of same type and/or bool not allowed")
+            if type(a) != type(b):
+                raise ValueError("Variables must be of same type")
+            if isinstance(a, bool) and isinstance(b, bool):
+                raise ValueError("This operation does not support bool")
             return a + b
 
         elif self.value == "MINUS":
-            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
-                raise ValueError("Variables must be of same type and/or bool not allowed") 
-              
+            if type(a) != type(b):
+                raise ValueError("Variables must be of same type")
+            if isinstance(a, bool) and isinstance(b, bool):
+                raise ValueError("This operation does not support bool") 
             return a - b
 
         elif self.value == "MULT":
-            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
-                raise ValueError("Variables must be of same type and/or bool not allowed") 
+            if type(a) != type(b):
+                raise ValueError("Variables must be of same type")
+            if isinstance(a, bool) and isinstance(b, bool):
+                raise ValueError("This operation does not support bool")
             return a * b
 
         elif self.value == "DIV":
-            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
-                raise ValueError("Variables must be of same type and/or bool not allowed")  
+            if type(a) != type(b):
+                raise ValueError("Variables must be of same type")
+            if isinstance(a, bool) and isinstance(b, bool):
+                raise ValueError("This operation does not support bool")
             return a // b
 
         elif self.value == "AND":
@@ -59,4 +61,4 @@ class BinaryOp(Node):
             return a == b
 
         else:
-            return self.value
+            raise ValueError("Unkwown Operation")

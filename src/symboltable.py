@@ -16,8 +16,8 @@ class SymbolTable():
 
     def set_identifier(self, idx, _value):        
         if idx in self.table:
-            if self.table[idx][0] == "BOOL" and isinstance(_value, bool) \
-            or self.table[idx][0] == "INTEGER" and type(_value) != type(True):
+            if (self.table[idx][0] == "BOOLEAN" and isinstance(_value, bool)) \
+            or (self.table[idx][0] == "INTEGER" and type(_value) != type(True) and isinstance(_value, int)):
         	    self.table[idx][1] = _value
             else:
                 raise KeyError(f"Variable type and assignment type does not match")
