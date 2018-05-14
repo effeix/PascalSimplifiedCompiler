@@ -10,12 +10,17 @@ class SymbolTable():
 
     def create_identifier(self, idx, _type):
     	if idx not in self.table:
-    		self.table[idx] = [_type, 0]
+    		self.table[idx] = [_type, None]
     	else:
     		raise KeyError(f"Variable already exists: {idx}")
 
     def set_identifier(self, idx, _value):        
         if idx in self.table:
-        	self.table[idx][1] = _value
+            if self.table[idx][0] == "BOOL" and isinstance(_value, bool) \
+            or self.table[idx][0] == "INTEGER" and type(_value) != type(True):
+        	    self.table[idx][1] = _value
+            else:
+                raise KeyError(f"Variable type and assignment type does not match")
+
         else:
         	raise KeyError(f"Variable is not defined: {idx}")

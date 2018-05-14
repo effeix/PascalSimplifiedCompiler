@@ -1,30 +1,25 @@
 PROGRAM teste;
 
 VAR
-    x, y, z: int;
-    test: bool;
+    x, y, z: integer;
+    test: boolean;
 BEGIN
     BEGIN
         BEGIN
 
-            y := 3;
-            test := 1 + 2;
+            x:=30;
+            y:=x-15;
 
-            IF (y < 3) THEN
-                BEGIN
-                    x := not 1;
-                    Print(x);
-                END
-            ELSE
-                BEGIN
-                    x := not 2;
-                    Print(test);
-                END;
+            while (y > (10 or 20)) do begin
+                x:= x+2;
+                print(x);
+                y:= y-2;
+            end;
 
-            WHILE (y < 3) DO
-                BEGIN
-                    Print(x);
-                END
+            if (x > 1) then
+            begin
+                print(not(not x));
+            end;
         END
     END
 END.

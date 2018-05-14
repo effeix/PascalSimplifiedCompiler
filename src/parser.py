@@ -18,6 +18,7 @@ class Parser():
     term_ops = ["MULT", "DIV", "AND"]
     expression_ops = ["MINUS", "PLUS", "OR", "NOT"]
     expression_rel_ops = ["EQUAL", "MORE_THAN", "LESS_THAN"]
+    type_ops = ["INT","BOOL"]
 
     tokens = Tokenizer()
 
@@ -39,16 +40,8 @@ class Parser():
             Parser.tokens.next()
             return expr
 
-        elif Parser.tokens.current.type == "INT":
+        elif Parser.tokens.current.type in Parser.type_ops: #int or bool
             result = BinaryOp(Parser.tokens.current.value)
-
-            Parser.tokens.next()
-
-            return result
-
-        elif Parser.tokens.current.type == "TRUE" \
-                or Parser.tokens.current.type == "FALSE":
-            result = BinaryOp(Parser.tokens.current.type)
 
             Parser.tokens.next()
 

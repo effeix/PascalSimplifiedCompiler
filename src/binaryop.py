@@ -13,44 +13,50 @@ class BinaryOp(Node):
             b = self.children[1].eval(st)
 
         if self.value == "PLUS":
-            print(a)
-            print(isinstance(a, int))
-            if not self._sametype(a, b):
-                raise ValueError("Variables must be of same type")
-            if isinstance(a, int):
-                return a + b
-            elif isinstance(a, bool):
-                return bool(a + b)
+            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
+                raise ValueError("Variables must be of same type and/or bool not allowed")
+            return a + b
 
         elif self.value == "MINUS":
+            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
+                raise ValueError("Variables must be of same type and/or bool not allowed") 
+              
             return a - b
 
         elif self.value == "MULT":
+            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
+                raise ValueError("Variables must be of same type and/or bool not allowed") 
             return a * b
 
         elif self.value == "DIV":
+            if type(a) != type(b) or (isinstance(a, bool) and isinstance(b, bool)):
+                raise ValueError("Variables must be of same type and/or bool not allowed")  
             return a // b
 
         elif self.value == "AND":
+            if(type(a) != type(b)):
+                raise ValueError("Variables must be of same type") 
             return a and b
 
         elif self.value == "OR":
+            if(type(a) != type(b)):
+                raise ValueError("Variables must be of same type") 
             return a or b
 
         elif self.value == "MORE_THAN":
+            if(type(a) != type(b)):
+                raise ValueError("Variables must be of same type") 
             return a > b
 
         elif self.value == "LESS_THAN":
+            if(type(a) != type(b)):
+                raise ValueError("Variables must be of same type") 
             return a < b
 
         elif self.value == "EQUAL":
+            if(type(a) != type(b)):
+                raise ValueError("Variables must be of same type") 
             return a == b
-
-        elif self.value == "TRUE":
-            return True
-
-        elif self.value == "FALSE":
-            return False
 
         else:
             return self.value

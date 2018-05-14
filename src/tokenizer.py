@@ -3,20 +3,18 @@ from token import Token
 RESERVED = {
     "and": "AND",
     "begin": "BEGIN",
-    "bool": "BOOL",
+    "boolean": "BOOL",
     "do": "DO",
     "else": "ELSE",
     "end": "END",
-    "false": "FALSE",
     "if": "IF",
-    "int": "INTEGER",
+    "integer": "INTEGER",
     "not": "NOT",
     "or": "OR",
     "print": "PRINT",
     "program": "PROGRAM",
     "read": "READ",
     "then": "THEN",
-    "true": "TRUE",
     "var": "VAR",
     "while": "WHILE"
 }
@@ -119,7 +117,13 @@ class Tokenizer():
                     if self.position >= len(self.origin)-1:
                         break
 
-                if aux in RESERVED:
+                if aux == "true":
+                    self.current = Token("BOOL", True)
+
+                elif aux == "false":
+                    self.current = Token("BOOL", False)
+                
+                elif aux in RESERVED:
                     self.current = Token(RESERVED[aux])
 
                 else:

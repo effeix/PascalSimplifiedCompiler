@@ -12,6 +12,3 @@ class AssignerNode(Node):
         else:
             val = self.children[0].eval(st)
             st.set_identifier(self.value, val)
-
-
-
