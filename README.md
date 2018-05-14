@@ -20,7 +20,7 @@
 - [x] Loops
 - [ ] Read
 - [x] Variable Declaration
-- [-] Types
+- [ ] Types
 - [x] Semantic Errors
 - [ ] Functions
 - [ ] Function Arguments
@@ -32,7 +32,7 @@ An EBNF (<b>E</b>xtended <b>B</b>ackus-<b>N</b>aur <b>F</b>orm) is a sequence of
 ###### Reference: [Extended Backus-Naur Form on Wikipedia](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)
 
 Below is the EBNF for this compiler:
-```
+```ebnf
 program = "program", identifier, ";", block, ".";
 block = [varblock], [funcblock], statements;
 var_declaration = identifier, {",", identifier}, ":", type;
