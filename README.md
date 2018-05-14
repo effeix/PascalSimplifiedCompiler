@@ -19,7 +19,7 @@
 - [x] Boolean Operators
 - [x] Conditional Statements
 - [x] Loops
-- [ ] Read !
+- [x] Read
 - [x] Variable Declaration
 - [x] Types
 - [ ] Type checking !
