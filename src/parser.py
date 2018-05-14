@@ -101,11 +101,6 @@ class Parser():
             result.set_child(result_cp)
             result.set_child(Parser.parse_term())
 
-        # GAMBIARRA, REMOVER
-        # se eu to acabando a conta n tem um close parents e tem outro elemento que nao eh none
-        # if Parser.tokens.current != None and Parser.tokens.current.type != "CLOSE_PAR" and Parser.tokens.current.type != "SEMICOLON":
-        #    raise ValueError(Parser.ERROR)
-
         return result
 
     def parse_rel_exp():
