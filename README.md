@@ -20,7 +20,8 @@
 - [x] Loops
 - [ ] Read
 - [x] Variable Declaration
-- [ ] Types
+- [x] Types
+- [ ] Type checking
 - [x] Semantic Errors
 - [ ] Functions
 - [ ] Function Arguments
