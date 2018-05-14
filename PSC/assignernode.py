@@ -6,13 +6,11 @@ class AssignerNode(Node):
         self.children = []
         self.vartype = _vartype
 
-    def eval(self, st):
-        if not self.vartype:
-            val = self.children[0].eval(st)
-        
+    def eval(self, st):        
         if self.vartype:
             st.create_identifier(self.value, self.vartype)
         else:
+            val = self.children[0].eval(st)
             st.set_identifier(self.value, val)
 
 

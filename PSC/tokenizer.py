@@ -1,65 +1,72 @@
 from token import Token
 
+RESERVED = {
+    "and": "AND",
+    "begin": "BEGIN",
+    "bool": "BOOL",
+    "do": "DO",
+    "else": "ELSE",
+    "end": "END",
+    "false": "FALSE",
+    "if": "IF",
+    "int": "INTEGER",
+    "not": "NOT",
+    "or": "OR",
+    "print": "PRINT",
+    "program": "PROGRAM",
+    "read": "READ",
+    "then": "THEN",
+    "true": "TRUE",
+    "var": "VAR",
+    "while": "WHILE"
+}
+
+SINGLE_CHAR = {
+    "(": "OPEN_PAR",
+    ")": "CLOSE_PAR",
+    "*": "MULT",
+    "+": "PLUS",
+    ",": "COMMA",
+    "-": "MINUS",
+    ".": "DOT",
+    "/": "DIV",
+    ";": "SEMICOLON",
+    "<": "LESS_THAN",
+    ">": "MORE_THAN",
+}
+
+
 class Tokenizer():
 
     def __init__(self):
         self.origin = "0"
         self.position = 0
-        self.res_words = {
-            "program":"PROGRAM",
-            "begin":"BEGIN",
-            "end":"END",
-            "print":"PRINT",
-            "if":"IF",
-            "then":"THEN",
-            "else":"ELSE",
-            "and":"AND",
-            "or":"OR",
-            "while":"WHILE",
-            "do":"DO",
-            "var":"VAR",
-            "bool":"BOOL",
-            "int":"INTEGER"
-        }
-        self.single_char_tokens = {
-            "+":"PLUS",
-            "-":"MINUS",
-            "*":"MULT",
-            "/":"DIV",
-            "&":"AND",
-            "|":"OR",
-            "(":"OPEN_PAR",
-            ")":"CLOSE_PAR",
-            ";":"STMT_FINISH",
-            ".":"DOT",
-            "<":"LESS_THAN",
-            ">":"MORE_THAN",
-            ",":"COMMA",
-        }
+        self.line_number = 0
         self.current = None
 
-    def isnumber(self, token):
+    def _isnumber(self, token):
         return token.isdigit()
-    
-    def isalphas(self, token):
+
+    def _isalpha(self, token):
         return token.isalpha()
-    
-    def pre_processing(self):
+
+    def _ignore_extras(self):
         is_dirty = True
         while is_dirty:
             if self.position < len(self.origin):
-                
+
                 if self.origin[self.position] == " ":
                     self.position += 1
-                
+
                 elif self.origin[self.position] == "\n":
                     self.position+=1
-                
+                    self.line_number += 1
+
                 elif self.origin[self.position] == "{":
                     while self.origin[self.position] != "}":
                         if self.position < len(self.origin)-1:
                             self.position += 1
-                            
+
                         else:
                             raise ValueError("Invalid token")
                     self.position += 1
@@ -73,12 +80,12 @@ class Tokenizer():
         self.current = None
         aux = ""
 
-        self.pre_processing()
-        
+        self._ignore_extras()
+
         if self.position < len(self.origin):
-            
-            if self.origin[self.position] in self.single_char_tokens:
-                self.current = Token(self.single_char_tokens[self.origin[self.position]])
+
+            if self.origin[self.position] in SINGLE_CHAR:
+                self.current = Token(SINGLE_CHAR[self.origin[self.position]])
                 self.position += 1
 
             elif self.origin[self.position] == ":":
@@ -89,39 +96,36 @@ class Tokenizer():
                     self.current = Token("COLON")
                     self.position += 1
 
-            elif self.isnumber(self.origin[self.position]):
-                while self.isnumber(self.origin[self.position]):
+            elif self._isnumber(self.origin[self.position]):
+                while self._isnumber(self.origin[self.position]):
+
                     aux += self.origin[self.position]
-                    
-                    if self.position < len(self.origin)-1:
-                        self.position += 1
-                    
-                    else:
-                        self.position += 1
+
+                    self.position += 1
+
+                    if self.position >= len(self.origin)-1:
                         break
-                
+
                 self.current = Token("INT", int(aux))
                 aux = ""
-            
-            elif self.isalphas(self.origin[self.position]):
-                while self.isalphas(self.origin[self.position]) or self.origin[self.position] == "_":
+
+            elif self._isalpha(self.origin[self.position]):
+                while self._isalpha(self.origin[self.position]) or self.origin[self.position] == "_":
+
                     aux += self.origin[self.position]
 
-                    if self.position < len(self.origin)-1:
-                        self.position += 1
-                    
-                    else:
-                        self.position += 1
+                    self.position += 1
+
+                    if self.position >= len(self.origin)-1:
                         break
-                
-                if aux in self.res_words:
-                    self.current = Token(self.res_words[aux])
+
+                if aux in RESERVED:
+                    self.current = Token(RESERVED[aux])
 
                 else:
-                    self.current = Token("WORD", aux)
-                
+                    self.current = Token("IDENTIFIER", aux)
+
                 aux = ""
 
             else:
-                raise ValueError("String {} is an invalid token".format(self.origin[self.position]))
-
+                raise ValueError(f"invalid token {self.origin[self.position]}")

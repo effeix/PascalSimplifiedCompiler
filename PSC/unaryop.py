@@ -10,3 +10,6 @@ class UnaryOp(Node):
         
         elif self.value == "MINUS":
             return -result
+
+        elif self.value == "NOT":
+        	return not result
