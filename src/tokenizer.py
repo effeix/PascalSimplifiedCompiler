@@ -7,6 +7,7 @@ RESERVED = {
     "do": "DO",
     "else": "ELSE",
     "end": "END",
+    "function": "FUNCTION",
     "if": "IF",
     "integer": "INTEGER",
     "not": "NOT",
