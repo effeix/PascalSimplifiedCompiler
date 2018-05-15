@@ -49,7 +49,7 @@ print = "print", "(", expression, ")";
 expression = simple_expression, {("<" | ">" | "="), simple_expression};
 simple_expression = term, {("+" | "-" | "or"), term};
 term = factor, {("*", "/", "and"), factor};
-factor = ({"+" | "-" | "not"}, factor) | number | ("(", expression, ")") | identifier | funcall;
+factor = ({"+" | "-" | "not"}, factor) | number | ("(", expression, ")") | identifier | funccall;
 funccall = identifier, "(", [expression, {";", expression}], ")";
 identifier = letter, {letter | digit | "_" };
 number = digit, {digit};
