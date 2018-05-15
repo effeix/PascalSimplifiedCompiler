@@ -22,7 +22,7 @@
 - [x] Read
 - [x] Variable Declaration
 - [x] Types
-- [ ] Type checking !
+- [x] Type checking
 - [x] Semantic Errors
 - [ ] Functions !
 - [ ] Function Arguments !
