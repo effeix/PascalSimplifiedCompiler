@@ -1,19 +1,20 @@
 from assignernode import AssignerNode
 from binaryop import BinaryOp
+from blocknode import Block
+from boolval import BoolVal
 from condnode import CondNode
+from funcdecnode import FuncDecNode
 from identifiernode import IdentifierNode
+from intval import IntVal
 from loopnode import LoopNode
 from nullnode import NullNode
-from writenode import WriteNode
 from program import Program
 from readnode import ReadNode
 from statementsnode import StatementsNode
 from tokenizer import Tokenizer
 from unaryop import UnaryOp
 from vardecnode import VarDecNode
-from intval import IntVal
-from boolval import BoolVal
-
+from writenode import WriteNode
 
 
 class Parser():
@@ -43,84 +44,84 @@ class Parser():
             Parser.tokens.next()
             return expr
 
-        elif Parser.tokens.current.type == "INT": 
-            result = IntVal(Parser.tokens.current.value)
+        elif Parser.tokens.current.type == "INT":
+            node = IntVal(Parser.tokens.current.value)
 
             Parser.tokens.next()
 
-            return result
-        
-        elif Parser.tokens.current.type == "BOOL": 
-            result = BoolVal(Parser.tokens.current.value)
+            return node
+
+        elif Parser.tokens.current.type == "BOOL":
+            node = BoolVal(Parser.tokens.current.value)
 
             Parser.tokens.next()
 
-            return result
+            return node
 
         elif Parser.tokens.current.type in Parser.expression_ops:
-            result = UnaryOp(Parser.tokens.current.type)
+            node = UnaryOp(Parser.tokens.current.type)
 
             Parser.tokens.next()
 
-            result.set_child(Parser.parse_factor())
+            node.set_child(Parser.parse_factor())
 
-            return result
+            return node
 
         elif Parser.tokens.current.type == "IDENTIFIER":
-            result = IdentifierNode(Parser.tokens.current.value)
+            node = IdentifierNode(Parser.tokens.current.value)
 
             Parser.tokens.next()
-            return result
+            return node
 
         else:
             raise ValueError(Parser.ERROR)
 
     def parse_term():
-        result = Parser.parse_factor()
+        node = Parser.parse_factor()
 
         while Parser.tokens.current is not None and \
                 Parser.tokens.current.type in Parser.term_ops:
-            result_cp = result
-            result = BinaryOp(Parser.tokens.current.type)
+            node_cp = node
+            node = BinaryOp(Parser.tokens.current.type)
 
             Parser.tokens.next()
 
-            result.set_child(result_cp)
-            result.set_child(Parser.parse_factor())
+            node.set_child(node_cp)
+            node.set_child(Parser.parse_factor())
 
-        return result
+        return node
 
     def parse_expression():
-        result = Parser.parse_term()
+        node = Parser.parse_term()
 
         while Parser.tokens.current is not None \
                 and Parser.tokens.current.type in Parser.expression_ops:
-            result_cp = result
+            node_cp = node
 
-            result = BinaryOp(Parser.tokens.current.type)
+            node = BinaryOp(Parser.tokens.current.type)
 
             Parser.tokens.next()
 
-            result.set_child(result_cp)
-            result.set_child(Parser.parse_term())
+            node.set_child(node_cp)
+            node.set_child(Parser.parse_term())
 
-        return result
+        return node
 
     def parse_rel_exp():
-        result = Parser.parse_expression()
+        node = Parser.parse_expression()
 
         while Parser.tokens.current is not None \
                 and Parser.tokens.current.type in Parser.expression_rel_ops:
-            result_cp = result
+            node_cp = node
 
-            result = BinaryOp(Parser.tokens.current.type)
+            node = BinaryOp(Parser.tokens.current.type)
 
             Parser.tokens.next()
 
-            result.set_child(result_cp)
-            result.set_child(Parser.parse_expression())
+            node.set_child(node_cp)
+            node.set_child(Parser.parse_expression())
 
-        return result
+        return node
 
     def parse_assignment():
         word = Parser.tokens.current.value
@@ -132,20 +133,20 @@ class Parser():
 
         elif Parser.tokens.current.type == "ASSIGN":
 
-            result = AssignerNode(_value=word)
+            node = AssignerNode(_value=word)
 
             Parser.tokens.next()
 
             if Parser.tokens.current.type == "READ":
-                result.set_child(Parser.parse_read())
+                node.set_child(Parser.parse_read())
             else:
-                result.set_child(Parser.parse_expression())
+                node.set_child(Parser.parse_expression())
 
         else:
             print(Parser.tokens.current.type)
             raise ValueError(Parser.ERROR)
 
-        return result
+        return node
 
     def parse_read():
         Parser.tokens.next()
@@ -154,7 +155,7 @@ class Parser():
             Parser.tokens.next()
 
             if Parser.tokens.current.type == "CLOSE_PAR":
-                result = ReadNode()
+                node = ReadNode()
                 Parser.tokens.next()
 
             else:
@@ -162,7 +163,7 @@ class Parser():
         else:
             raise ValueError(f"Expecting opening parenthesis. Got: {Parser.tokens.current.type}")
 
-        return result
+        return node
 
     def parse_write():
         Parser.tokens.next()
@@ -171,16 +172,16 @@ class Parser():
             raise ValueError(Parser.ERROR)
 
         elif Parser.tokens.current.type == "OPEN_PAR":
-            result = WriteNode()
+            node = WriteNode()
 
             Parser.tokens.next()
-            result.set_child(Parser.parse_expression())
+            node.set_child(Parser.parse_expression())
 
             if Parser.tokens.current is None or Parser.tokens.current.type != "CLOSE_PAR":
                 raise ValueError(Parser.ERROR)
 
             Parser.tokens.next()
-            return result
+            return node
 
         else:
             raise ValueError(Parser.ERROR)
@@ -193,11 +194,11 @@ class Parser():
 
         elif Parser.tokens.current.type == "OPEN_PAR":
 
-            result = CondNode()
+            node = CondNode()
 
             Parser.tokens.next()
 
-            result.set_child(Parser.parse_rel_exp())
+            node.set_child(Parser.parse_rel_exp())
 
             if Parser.tokens.current.type == "CLOSE_PAR":
 
@@ -206,15 +207,15 @@ class Parser():
                 if Parser.tokens.current.type == "THEN":
 
                     Parser.tokens.next()
-                    result.set_child(Parser.parse_statements())
+                    node.set_child(Parser.parse_statements())
 
                     if Parser.tokens.current.type == "ELSE":
 
                         Parser.tokens.next()
-                        result.set_child(Parser.parse_statements())
+                        node.set_child(Parser.parse_statements())
 
                     else:
-                        result.set_child(NullNode())
+                        node.set_child(NullNode())
                 else:
                     raise ValueError(f"Expecting THEN keyword. Got: {Parser.tokens.current.type}")
             else:
@@ -222,7 +223,7 @@ class Parser():
         else:
             raise ValueError(f"Expecting opening parenthesis. Got: {Parser.tokens.current.type}")
 
-        return result
+        return node
 
     def parse_while():
         Parser.tokens.next()
@@ -232,11 +233,11 @@ class Parser():
 
         elif Parser.tokens.current.type == "OPEN_PAR":
 
-            result = LoopNode()
+            node = LoopNode()
 
             Parser.tokens.next()
 
-            result.set_child(Parser.parse_rel_exp())
+            node.set_child(Parser.parse_rel_exp())
 
             if Parser.tokens.current.type == "CLOSE_PAR":
 
@@ -248,7 +249,7 @@ class Parser():
 
                     if Parser.tokens.current.type == "BEGIN":
 
-                        result.set_child(Parser.parse_statements())
+                        node.set_child(Parser.parse_statements())
                     else:
                         raise ValueError(Parser.ERROR)
                 else:
@@ -256,7 +257,7 @@ class Parser():
             else:
                 raise ValueError(Parser.ERROR)
 
-        return result
+        return node
 
     def parse_statement():
         if Parser.tokens.current.type == "IF":
@@ -277,80 +278,133 @@ class Parser():
             raise ValueError(f"Expecting BEGIN keyword. Got: {Parser.tokens.current.type}")
 
         elif Parser.tokens.current.type == "BEGIN":
-            result = StatementsNode()
+            node = StatementsNode()
 
             Parser.tokens.next()
 
-            result.set_child(Parser.parse_statement())
+            node.set_child(Parser.parse_statement())
 
             while Parser.tokens.current.type == "SEMICOLON":
                 Parser.tokens.next()
-                result.set_child(Parser.parse_statement())
+                node.set_child(Parser.parse_statement())
 
             if Parser.tokens.current.type != "END":
                 raise ValueError(f"Expecting final END keyword. Got: {Parser.tokens.current.type}")
 
             Parser.tokens.next()
 
-        return result
+        return node
+
+    def parse_funcdec():
+        f_has_function = True
+        node = NullNode()
+
+        while f_has_function:
+            if Parser.tokens.current.type == "FUNCTION":
+                Parser.tokens.next()
+
+                if Parser.tokens.current.type == "IDENTIFIER":
+                    Parser.tokens.next()
+
+                    node = FuncDecNode()
+
+                    if Parser.tokens.current.type == "OPEN_PAR":
+                        Parser.tokens.next()
+
+                        # node.set_child(Parser.parse_function_arguments())
+
+                        if Parser.tokens.current.type == "CLOSE_PAR":
+                            Parser.tokens.next()
+
+                            if Parser.tokens.current.type == "COLON":
+                                Parser.tokens.next()
+
+                                if Parser.tokens.current.type == "INTEGER" \
+                                        or Parser.tokens.current.type == "BOOLEAN":
+                                    Parser.tokens.next()
+
+                                    if Parser.tokens.current.type == "SEMICOLON":
+                                        Parser.tokens.next()
+
+                                        node.set_child(Parser.parse_block())
+                                        Parser.tokens.next()
+
+                                    else:
+                                        raise ValueError("Expecting ;")
+
+            elif Parser.tokens.current.type == "BEGIN":
+                f_has_function = False
+
+            else:
+                raise ValueError(f"Invalid token {Parser.tokens.current.type}")
+
+        return node
 
     def parse_vardec():
         f_lines = True
-        result = NullNode()
 
         if Parser.tokens.current is None:
             raise ValueError(f"unexpected end of file")
 
-        if Parser.tokens.current.type == "VAR":
-            result = VarDecNode()
+        node = VarDecNode()
 
-            Parser.tokens.next()
+        Parser.tokens.next()
 
-            while f_lines:
-                variables = []
+        while f_lines:
+            variables = []
 
-                if Parser.tokens.current.type == "IDENTIFIER":
-                    variables.append(Parser.tokens.current.value)
+            if Parser.tokens.current.type == "IDENTIFIER":
+                variables.append(Parser.tokens.current.value)
+                Parser.tokens.next()
+
+                while Parser.tokens.current.type == "COMMA":
                     Parser.tokens.next()
 
-                    while Parser.tokens.current.type == "COMMA":
+                    if Parser.tokens.current.type == "IDENTIFIER":
+                        variables.append(Parser.tokens.current.value)
                         Parser.tokens.next()
-
-                        if Parser.tokens.current.type == "IDENTIFIER":
-                            variables.append(Parser.tokens.current.value)
-                            Parser.tokens.next()
-                        else:
-                            raise ValueError(f"Expecting variable name after comma (,). Got: {Parser.tokens.current.type}")
-
-                    if Parser.tokens.current.type == "COLON":
-                        Parser.tokens.next()
-
-                        if Parser.tokens.current.type == "BOOLEAN" or Parser.tokens.current.type == "INTEGER":
-
-                            for var in variables:
-                                varnode = AssignerNode(_vartype=Parser.tokens.current.type, _value=var)
-                                result.set_child(varnode)
-
-                            Parser.tokens.next()
-
-                            if Parser.tokens.current.type == "SEMICOLON":
-
-                                Parser.tokens.next()
-
-                                if Parser.tokens.current.type != "IDENTIFIER":
-                                    f_lines = False
-                            else:
-                                raise ValueError(f"Expecting semicolon (;). Got: {Parser.tokens.current.type}")
-                        else:
-                            raise ValueError(f"Expecting variable type. Got: {Parser.tokens.current.type}")
                     else:
-                        raise ValueError(f"Variable list should be followed by trailing colon (:). Got: {Parser.tokens.current.type}")
-                else:
-                    raise ValueError(f"Expecting variable name. Got: {Parser.tokens.current.type}")
-        return result
+                        raise ValueError(f"Expecting variable name after comma (,). Got: {Parser.tokens.current.type}")
 
-    def parse_funcdec():
-        pass
+                if Parser.tokens.current.type == "COLON":
+                    Parser.tokens.next()
+
+                    if Parser.tokens.current.type == "BOOLEAN" or Parser.tokens.current.type == "INTEGER":
+
+                        for var in variables:
+                            varnode = AssignerNode(_vartype=Parser.tokens.current.type, _value=var)
+                            node.set_child(varnode)
+
+                        Parser.tokens.next()
+
+                        if Parser.tokens.current.type == "SEMICOLON":
+
+                            Parser.tokens.next()
+
+                            if Parser.tokens.current.type != "IDENTIFIER":
+                                f_lines = False
+                        else:
+                            raise ValueError(f"Expecting semicolon (;). Got: {Parser.tokens.current.type}")
+                    else:
+                        raise ValueError(f"Expecting variable type. Got: {Parser.tokens.current.type}")
+                else:
+                    raise ValueError(f"Variable list should be followed by trailing colon (:). Got: {Parser.tokens.current.type}")
+            else:
+                raise ValueError(f"Expecting variable name. Got: {Parser.tokens.current.type}")
+        return node
+
+    def parse_block():
+        node = Block()
+
+        if Parser.tokens.current.type == "VAR":
+            node.set_child(Parser.parse_vardec())
+        else:
+            node.set_child(NullNode())
+
+        Parser.parse_funcdec()
+        node.set_child(Parser.parse_statements())
+
+        return node
 
     def parse_program():
         if Parser.tokens.current is None:
@@ -363,23 +417,28 @@ class Parser():
                 if Parser.tokens.current.type == "SEMICOLON":
                     Parser.tokens.next()
 
-                    result = Program()
+                    node = Program()
 
-                    result.set_child(Parser.parse_vardec())
-
-                    result.set_child(Parser.parse_statements())
+                    node.set_child(Parser.parse_block())
 
                     if Parser.tokens.current is None or \
                             Parser.tokens.current.type != "DOT":
                         raise ValueError(f"Expecting final dot (.). Got: {Parser.tokens.current.type}")
                 else:
-                    raise ValueError(f"Expecting semicolon (;). Got: {Parser.tokens.current.type}")
+                    raise ValueError(
+                        f"Fatal: Syntax error, \";\" expected"
+                        + f" but \"{Parser.tokens.current.type}\" found")
             else:
-                raise ValueError(f"Expecting program name. Got: {Parser.tokens.current.type}")
+                raise ValueError(
+                    f"Fatal: Syntax error, \"IDENTIFIER\" expected"
+                    + f" but \"{Parser.tokens.current.type}\" found")
         else:
-            raise ValueError(f"Expecting PROGRAM keyword. Got: {Parser.tokens.current.type}")
+            raise ValueError(
+                f"Fatal: Syntax error, \"PROGRAM\" expected"
+                + f" but \"{Parser.tokens.current.type}"
+                + f" {Parser.tokens.current.value}\" found")
 
-        return result
+        return node
 
     def parse():
         Parser.tokens.next()
