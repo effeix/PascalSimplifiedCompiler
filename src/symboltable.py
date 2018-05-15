@@ -16,10 +16,9 @@ class SymbolTable():
 
     def set_identifier(self, idx, _value):
         if idx in self.table:
-            if (self.table[idx][0] == "BOOLEAN" and isinstance(_value, bool)) \
-                    or (self.table[idx][0] == "INTEGER"
-                        and type(_value) != type(True)
-                        and isinstance(_value, int)):
+            if self._trueboolean(idx, _value) \
+                or self._trueint(idx, _value) \
+                    or self._truefunc(idx):
                 self.table[idx][1] = _value
             else:
                 raise KeyError(
@@ -28,3 +27,14 @@ class SymbolTable():
 
         else:
             raise KeyError(f"Variable is not defined: {idx}")
+
+    def _trueboolean(self, idx, value):
+        return self.table[idx][0] == "BOOLEAN" and isinstance(value, bool)
+
+    def _trueint(self, idx, value):
+        return self.table[idx][0] == "INTEGER" \
+            and isinstance(value, int) \
+            and not isinstance(value, bool)
+
+    def _truefunc(self, idx):
+        return self.table[idx][0] == "FUNC"
