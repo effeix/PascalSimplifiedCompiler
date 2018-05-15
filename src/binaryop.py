@@ -37,27 +37,33 @@ class BinaryOp(Node):
 
         elif self.value == "AND":
             if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type") 
-            return a and b
+                raise ValueError("Variables must be of same type")
+            if isinstance(a, bool) and isinstance(b, bool):
+                return a and b
+            else:
+                return a & b
 
         elif self.value == "OR":
             if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type") 
-            return a or b
+                raise ValueError("Variables must be of same type")
+            if isinstance(a, bool) and isinstance(b, bool):
+                return a or b
+            else:
+                return a | b
 
         elif self.value == "MORE_THAN":
             if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type") 
+                raise ValueError("Variables must be of same type")
             return a > b
 
         elif self.value == "LESS_THAN":
             if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type") 
+                raise ValueError("Variables must be of same type")
             return a < b
 
         elif self.value == "EQUAL":
             if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type") 
+                raise ValueError("Variables must be of same type")
             return a == b
 
         else:
