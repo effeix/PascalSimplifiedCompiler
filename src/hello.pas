@@ -15,21 +15,20 @@ BEGIN
 END;
 
 BEGIN
-    x := 30;
-    y:= x - 15;
+    x := 0;
+    y:= 10;
 
-    write(10 and 20);
+    write(1 AND 2);
 
-    WHILE (y > 2) DO
+    WHILE (y > 0) DO
     BEGIN
         x := x + 2;
         write(x);
-        y := y - 2;
+        y := y - 1;
     END;
 
     IF (x > 1) THEN
     BEGIN
-        write(12234);
         write(not x);
     END;
 END.
