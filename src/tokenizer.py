@@ -1,3 +1,4 @@
+from string import ascii_letters, digits
 from token import Token
 
 RESERVED = {
@@ -34,6 +35,8 @@ SINGLE_CHAR = {
     ">": "MORE_THAN",
 }
 
+ALLOWED_VARNAME_CHARS = ascii_letters + digits + "_"
+
 
 class Tokenizer():
 
@@ -48,6 +51,9 @@ class Tokenizer():
 
     def _isalpha(self, token):
         return token.isalpha()
+
+    def _isalphanum(self, token):
+        return token.isalnum()
 
     def _ignore_extras(self):
         is_dirty = True
@@ -109,7 +115,8 @@ class Tokenizer():
                 aux = ""
 
             elif self._isalpha(self.origin[self.position]):
-                while self._isalpha(self.origin[self.position]) or self.origin[self.position] == "_":
+                while self.origin[self.position] in ALLOWED_VARNAME_CHARS:
+                # while self._isalnum(self.origin[self.position]) or self.origin[self.position] == "_":
 
                     aux += self.origin[self.position]
 
