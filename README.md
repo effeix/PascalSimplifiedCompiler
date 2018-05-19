@@ -25,9 +25,9 @@
 - [x] Type checking
 - [x] Semantic Errors
 - [x] Functions
-- [ ] Function Arguments !
+- [x] Function Arguments
 - [x] Variable Scopes
-- [ ] Code Generation
+- [ ] Code Generation !
 
 ### EBNF
 An [EBNF (<b>E</b>xtended <b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) is a sequence of statements describing a [Context-Free Grammar](https://en.wikipedia.org/wiki/Context-free_grammar). It is used to represent a formal language or programming language and, as the name sugests, is an extension to the original [BNF (<b>B</b>ackus-<b>N</b>aur <b>F</b>orm)](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).
