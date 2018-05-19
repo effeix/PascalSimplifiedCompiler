@@ -117,7 +117,6 @@ class Tokenizer():
 
             elif self._isalpha(self.origin[self.position]):
                 while self.origin[self.position] in ALLOWED_VARNAME_CHARS:
-                    # while self._isalnum(self.origin[self.position]) or self.origin[self.position] == "_":
 
                     aux += self.origin[self.position]
 
