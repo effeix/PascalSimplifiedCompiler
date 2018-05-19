@@ -44,7 +44,7 @@ class Tokenizer():
     def __init__(self):
         self.origin = "0"
         self.position = 0
-        self.line_number = 0
+        self.line_number = 1
         self.current = None
 
     def _isnumber(self, token):
