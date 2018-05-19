@@ -33,6 +33,7 @@ SINGLE_CHAR = {
     ";": "SEMICOLON",
     "<": "LESS_THAN",
     ">": "MORE_THAN",
+    "=": "EQUAL"
 }
 
 ALLOWED_VARNAME_CHARS = ascii_letters + digits + "_"
@@ -116,7 +117,7 @@ class Tokenizer():
 
             elif self._isalpha(self.origin[self.position]):
                 while self.origin[self.position] in ALLOWED_VARNAME_CHARS:
-                # while self._isalnum(self.origin[self.position]) or self.origin[self.position] == "_":
+                    # while self._isalnum(self.origin[self.position]) or self.origin[self.position] == "_":
 
                     aux += self.origin[self.position]
 
@@ -130,7 +131,7 @@ class Tokenizer():
 
                 elif aux == "false":
                     self.current = Token("BOOL", False)
-                
+
                 elif aux in RESERVED:
                     self.current = Token(RESERVED[aux])
 
@@ -138,8 +139,6 @@ class Tokenizer():
                     self.current = Token("IDENTIFIER", aux)
 
                 aux = ""
-
-            
 
             else:
                 raise ValueError(f"invalid token {self.origin[self.position]}")
