@@ -18,6 +18,22 @@ class FuncCallNode(Node):
         local_st = SymbolTable(st)
 
         func_arguments.eval(local_st)
+
+        name_args = [arg.value for arg in func_arguments.children]
+        value_args = [(arg[0].eval(local_st),arg[1]) for arg in self.children[0]]
+
+        if not len(func_arguments.children) == len(value_args) + 1:
+            raise ValueError(f"wrong number of parameters specified for call to {self.value}")
+
+        i = 0
+        while i < len(value_args):
+            if local_st.get_identifier(name_args[i], what=0) != value_args[i][1]:
+                raise ValueError(f"Incompatible type for arg no. {i+1} in call to {self.value}")
+
+            local_st.set_identifier(name_args[i], value_args[i][0])
+
+            i+=1
+
         local_variables.eval(local_st)
         local_functions.eval(local_st)
         local_statements.eval(local_st)

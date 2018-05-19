@@ -76,6 +76,7 @@ class Parser():
 
                 if Parser.tokens.current.type == "CLOSE_PAR":
                     node = FuncCallNode(identifier)
+                    node.set_child(args)
                     Parser.tokens.next()
 
         else:
@@ -302,7 +303,23 @@ class Parser():
         return node
 
     def parse_function_call_args():
-        return NullNode()
+        arguments = []
+        while Parser.tokens.current.type != "CLOSE_PAR":
+            argument = Parser.parse_rel_exp()
+
+            if isinstance(argument, BoolVal):
+                arg_type = "BOOLEAN"
+            elif isinstance(argument, IntVal):
+                arg_type = "INTEGER"
+
+            arguments.append((argument, arg_type))
+
+            if Parser.tokens.current.type == "COMMA":
+                Parser.tokens.next()
+            elif Parser.tokens.current.type != "CLOSE_PAR":
+                raise  ValueError("Invalid token")
+
+        return arguments
 
     def parse_funcdec():
         f_has_function = True
