@@ -24,9 +24,9 @@
 - [x] Types
 - [x] Type checking
 - [x] Semantic Errors
-- [ ] Functions !
+- [x] Functions
 - [ ] Function Arguments !
-- [ ] Variable Scopes !
+- [x] Variable Scopes
 - [ ] Code Generation
 
 ### EBNF
