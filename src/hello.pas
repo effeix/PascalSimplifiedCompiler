@@ -4,7 +4,7 @@ VAR
     a, b, c, integer_return: integer;
     boolean_return: boolean;
 
-FUNCTION function_integer_return(): integer;
+FUNCTION function_integer_return(x: integer): integer;
     VAR
         a, b: integer;
 
@@ -25,7 +25,6 @@ FUNCTION function_boolean_return(): boolean;
     END;
 
 BEGIN
-
     c := read();
     write(c);
 

@@ -322,9 +322,8 @@ class Parser():
                     child_node = FuncDecNode(func_name)
 
                     if Parser.tokens.current.type == "OPEN_PAR":
-                        Parser.tokens.next()
 
-                        arguments = Parser.parse_function_definition_args()
+                        arguments = Parser.parse_vardec(is_parsing_function=True)
 
                         if Parser.tokens.current.type == "CLOSE_PAR":
                             Parser.tokens.next()
@@ -366,13 +365,15 @@ class Parser():
 
         return node
 
-    def parse_vardec():
+    def parse_vardec(is_parsing_function=False):
         f_lines = True
 
         if Parser.tokens.current is None:
             raise ValueError(f"unexpected end of file")
 
         node = VarDecNode()
+
+        last_token = Parser.tokens.current.type
 
         Parser.tokens.next()
 
@@ -410,13 +411,19 @@ class Parser():
                             if Parser.tokens.current.type != "IDENTIFIER":
                                 f_lines = False
                         else:
-                            raise ValueError(f"Expecting semicolon (;). Got: {Parser.tokens.current.type}")
+                            if not is_parsing_function:
+                                raise ValueError(f"Expecting semicolon (;). Got: {Parser.tokens.current.type}")
+                            else:
+                                break
                     else:
                         raise ValueError(f"Expecting variable type. Got: {Parser.tokens.current.type}")
                 else:
                     raise ValueError(f"Variable list should be followed by trailing colon (:). Got: {Parser.tokens.current.type}")
             else:
-                raise ValueError(f"Expecting variable name. Got: {Parser.tokens.current.type}")
+                if last_token != "OPEN_PAR":
+                    raise ValueError(f"Expecting variable name. Got: {Parser.tokens.current.type}")
+                else:
+                    break
         return node
 
     def parse_block():
