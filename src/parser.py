@@ -301,9 +301,6 @@ class Parser():
 
         return node
 
-    def parse_function_definition_args():
-        return VarDecNode()
-
     def parse_function_call_args():
         return NullNode()
 
