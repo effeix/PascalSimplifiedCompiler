@@ -1,12 +1,21 @@
 class SymbolTable():
-    def __init__(self):
+    def __init__(self, parent):
         self.table = {}
+        self.parent = parent
+        self.is_global = False
+
+        if parent is None:
+            self.is_global = True
 
     def get_identifier(self, idx):
         if idx not in self.table.keys():
-            raise KeyError(f'{idx} not in SymbolTable')
-
-        return self.table[idx][1]
+            if not self.is_global:
+                identifier = self.parent.get_identifier(idx)
+                return identifier
+            else:
+                raise NameError(f'Error: Identifier not found "{idx}"')
+        else:
+            return self.table[idx][1]
 
     def create_identifier(self, idx, _type):
         if idx not in self.table:
@@ -21,12 +30,13 @@ class SymbolTable():
                     or self._truefunc(idx):
                 self.table[idx][1] = _value
             else:
-                raise KeyError(
-                    "Variable type and assignment type does"
-                    + " not match")
+                raise NameError('Error: Incompatible types')
 
         else:
-            raise KeyError(f"Variable is not defined: {idx}")
+            if not self.is_global:
+                self.parent.set_identifier(idx, _value)
+            else:
+                raise NameError(f'Error: Identifier not found "{idx}"')
 
     def _trueboolean(self, idx, value):
         return self.table[idx][0] == "BOOLEAN" and isinstance(value, bool)

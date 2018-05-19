@@ -3,7 +3,9 @@ from binaryop import BinaryOp
 from blocknode import Block
 from boolval import BoolVal
 from condnode import CondNode
+from funccallnode import FuncCallNode
 from funcdecnode import FuncDecNode
+from functionsnode import FunctionsNode
 from identifiernode import IdentifierNode
 from intval import IntVal
 from loopnode import LoopNode
@@ -49,14 +51,10 @@ class Parser():
 
             Parser.tokens.next()
 
-            return node
-
         elif Parser.tokens.current.type == "BOOL":
             node = BoolVal(Parser.tokens.current.value)
 
             Parser.tokens.next()
-
-            return node
 
         elif Parser.tokens.current.type in Parser.expression_ops:
             node = UnaryOp(Parser.tokens.current.type)
@@ -65,16 +63,25 @@ class Parser():
 
             node.set_child(Parser.parse_factor())
 
-            return node
-
         elif Parser.tokens.current.type == "IDENTIFIER":
+            identifier = Parser.tokens.current.value
             node = IdentifierNode(Parser.tokens.current.value)
 
             Parser.tokens.next()
-            return node
+
+            if Parser.tokens.current.type == "OPEN_PAR":
+                Parser.tokens.next()
+
+                args = Parser.parse_function_call_args()
+
+                if Parser.tokens.current.type == "CLOSE_PAR":
+                    node = FuncCallNode(identifier)
+                    Parser.tokens.next()
 
         else:
             raise ValueError(Parser.ERROR)
+
+        return node
 
     def parse_term():
         node = Parser.parse_factor()
@@ -143,7 +150,6 @@ class Parser():
                 node.set_child(Parser.parse_expression())
 
         else:
-            print(Parser.tokens.current.type)
             raise ValueError(Parser.ERROR)
 
         return node
@@ -289,29 +295,36 @@ class Parser():
                 node.set_child(Parser.parse_statement())
 
             if Parser.tokens.current.type != "END":
-                raise ValueError(f"Expecting final END keyword. Got: {Parser.tokens.current.type}")
+                raise ValueError(f"Expecting final END keyword. Got: {Parser.tokens.current.type} at {Parser.tokens.position}")
 
             Parser.tokens.next()
 
         return node
 
+    def parse_function_definition_args():
+        return VarDecNode()
+
+    def parse_function_call_args():
+        return NullNode()
+
     def parse_funcdec():
         f_has_function = True
-        node = NullNode()
+        node = FunctionsNode()
 
         while f_has_function:
             if Parser.tokens.current.type == "FUNCTION":
                 Parser.tokens.next()
 
                 if Parser.tokens.current.type == "IDENTIFIER":
+                    func_name = Parser.tokens.current.value
                     Parser.tokens.next()
 
-                    node = FuncDecNode()
+                    child_node = FuncDecNode(func_name)
 
                     if Parser.tokens.current.type == "OPEN_PAR":
                         Parser.tokens.next()
 
-                        # node.set_child(Parser.parse_function_arguments())
+                        arguments = Parser.parse_function_definition_args()
 
                         if Parser.tokens.current.type == "CLOSE_PAR":
                             Parser.tokens.next()
@@ -321,12 +334,25 @@ class Parser():
 
                                 if Parser.tokens.current.type == "INTEGER" \
                                         or Parser.tokens.current.type == "BOOLEAN":
+
+                                    return_type = Parser.tokens.current.type
                                     Parser.tokens.next()
 
                                     if Parser.tokens.current.type == "SEMICOLON":
+
+                                        ret = AssignerNode(
+                                            _vartype=return_type,
+                                            _value=func_name
+                                        )
+
+                                        arguments.set_child(ret)
+
                                         Parser.tokens.next()
 
-                                        node.set_child(Parser.parse_block())
+                                        child_node.set_child(arguments)
+                                        child_node.set_child(Parser.parse_block())
+                                        node.set_child(child_node)
+
                                         Parser.tokens.next()
 
                                     else:
@@ -401,7 +427,7 @@ class Parser():
         else:
             node.set_child(NullNode())
 
-        Parser.parse_funcdec()
+        node.set_child(Parser.parse_funcdec())
         node.set_child(Parser.parse_statements())
 
         return node
