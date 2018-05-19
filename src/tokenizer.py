@@ -53,9 +53,6 @@ class Tokenizer():
     def _isalpha(self, token):
         return token.isalpha()
 
-    def _isalphanum(self, token):
-        return token.isalnum()
-
     def _ignore_extras(self):
         is_dirty = True
         while is_dirty:
