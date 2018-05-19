@@ -7,7 +7,8 @@ class SymbolTable():
         if parent is None:
             self.is_global = True
 
-    def get_identifier(self, idx):
+    def get_identifier(self, idx, what=1):
+        """what = 0 or 1 (type or value)"""
         if idx not in self.table.keys():
             if not self.is_global:
                 identifier = self.parent.get_identifier(idx)
@@ -15,7 +16,7 @@ class SymbolTable():
             else:
                 raise NameError(f'Error: Identifier not found "{idx}"')
         else:
-            return self.table[idx][1]
+            return self.table[idx][what]
 
     def create_identifier(self, idx, _type):
         if idx not in self.table:
