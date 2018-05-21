@@ -94,3 +94,8 @@ class Assembly():
     @staticmethod
     def code():
         print(Assembly.__code)
+
+    @staticmethod
+    def make_file():
+        with open("hello", "w") as f:
+            f.write(Assembly.__code)
