@@ -97,5 +97,5 @@ class Assembly():
 
     @staticmethod
     def make_file():
-        with open("hello", "w") as f:
+        with open("psc.asm", "w") as f:
             f.write(Assembly.__code)
