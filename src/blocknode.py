@@ -16,7 +16,8 @@ class Block(Node):
 
         self.__assembly_terminate()
 
-        Assembly.make_file()
+        Assembly.code()
+        # Assembly.make_file()
 
     def __assembly_init(self):
 
