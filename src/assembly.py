@@ -85,7 +85,11 @@ class Assembly():
 
     @staticmethod
     def append(line):
-        Assembly.__code += line
+        if isinstance(line, str):
+            Assembly.__code += (line + "\n")
+        elif isinstance(line, list):
+            for l in line:
+                Assembly.__code += (l + "\n")
 
     @staticmethod
     def code():
