@@ -487,6 +487,7 @@ class Parser():
 
         return node
 
-    def parse():
+    def parse(program=""):
+        Parser.tokens.origin = program
         Parser.tokens.next()
         return Parser.__parse_program()
