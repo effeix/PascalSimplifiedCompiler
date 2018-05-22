@@ -72,6 +72,30 @@ INTERRUPT = [
     """  INT 0x80"""
 ]
 
+STACK_OPS = [
+    "PUSH",
+    "POP"
+]
+
+JUMP_OPS = [
+    "JL",
+    "JG",
+    "JE"
+]
+
+ARITHMETIC_OPS = [
+    "ADD",
+    "SUB",
+    "DIV",
+    "IMUL"
+]
+
+LOGIC_OPS = [
+    "OR",
+    "AND",
+    "XOR"
+]
+
 
 class Assembly():
     __code = ""

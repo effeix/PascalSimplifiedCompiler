@@ -18,6 +18,6 @@ if __name__ == "__main__":
     # filename = input("Filename (.pas): ").lower()
     # if not filename.endswith(".pas"):
     #    filename = filename + ".pas"
-    filename = "hello.pas"
+    filename = "hello2.pas"
     origin = read_pascal(filename)
     main(origin)
