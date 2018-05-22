@@ -1,5 +1,5 @@
 from string import ascii_letters, digits
-from token import Token
+from tokens import Token
 
 RESERVED = {
     "and": "AND",
