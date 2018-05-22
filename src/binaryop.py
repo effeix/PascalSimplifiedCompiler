@@ -55,7 +55,7 @@ class BinaryOp(Node):
         elif self.value == "OR":
             if(type(a) != type(b)):
                 raise ValueError("Variables must be of same type")
-            self.__generate_assembly("AND")
+            self.__generate_assembly("OR")
             if isinstance(a, bool) and isinstance(b, bool):
                 return a or b
             else:
