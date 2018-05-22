@@ -1,9 +1,12 @@
 PROGRAM hello;
 
 VAR
-    x: int;
+    x, y, z: integer;
 
 BEGIN
-    x := Read();
-    Print(x);
+    x := 10;
+    y := 5;
+    z := x / y;
+
+    write(z);
 END.
