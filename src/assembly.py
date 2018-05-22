@@ -92,8 +92,7 @@ ARITHMETIC_OPS = [
 
 LOGIC_OPS = [
     "OR",
-    "AND",
-    "XOR"
+    "AND"
 ]
 
 
@@ -116,10 +115,10 @@ class Assembly():
                 Assembly.__code += (l + "\n")
 
     @staticmethod
-    def code():
+    def print():
         print(Assembly.__code)
 
     @staticmethod
-    def make_file():
-        with open("psc.asm", "w") as f:
+    def make_file(filename):
+        with open(filename, "w") as f:
             f.write(Assembly.__code)
