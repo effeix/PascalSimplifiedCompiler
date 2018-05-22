@@ -1,3 +1,5 @@
+import os
+
 CONSTANTS = [
     "SYS_EXIT equ 1",
     "SYS_READ equ 3",
@@ -98,6 +100,7 @@ LOGIC_OPS = [
 
 class Assembly():
     __code = ""
+    __exec_type = ""
 
     def __new__(cls):
 
@@ -120,5 +123,14 @@ class Assembly():
 
     @staticmethod
     def make_file(filename):
-        with open(filename, "w") as f:
-            f.write(Assembly.__code)
+        f = open(filename, "w")
+        f.write(Assembly.__code)
+        f.close()
+
+    @staticmethod
+    def set_exec_type(exec_type):
+        Assembly.__exec_type = exec_type
+
+    @staticmethod
+    def get_exec_type():
+        return Assembly.__exec_type
