@@ -1,4 +1,2 @@
 __pycache__/
-*.asm
-psc
-psc.o
+com/
