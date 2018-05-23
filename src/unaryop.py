@@ -1,4 +1,5 @@
 from node import Node
+from assembly import Assembly
 
 
 class UnaryOp(Node):
@@ -13,12 +14,16 @@ class UnaryOp(Node):
             raise ValueError("Incompatible types: got \"Boolean\" expected \"Integer\"")
 
         elif self.value == "MINUS":
+            Assembly.append("""  NEG EBX""")
+
             if not isinstance(result, bool):
                 return -result
 
             raise ValueError("Incompatible types: got \"Boolean\" expected \"Integer\"")
 
         elif self.value == "NOT":
+            Assembly.append("""  NOT EBX""")
+
             if isinstance(result, bool):
                 return not result
             else:

@@ -1,8 +1,12 @@
+from identifier import Identifier
+
+
 class SymbolTable():
     def __init__(self, parent):
         self.table = {}
         self.parent = parent
         self.is_global = False
+        self.identifier = Identifier.get_new()
 
         if parent is None:
             self.is_global = True

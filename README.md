@@ -1,5 +1,19 @@
 # Pascal Simplified Compiler
 
+### Usage
+You are free to use PSC however you like. Simply clone the repository and run the file ```main.py``` (inside ```src/``` dir):
+
+```sh
+$ python3 src/main.py PASCAL_FILE i|c
+```
+
+where ```i``` stands for the interpreted version and ```c``` for the compiled version.
+
+##### Dependencies
+- Python 3.6.x
+- NASM command line tool
+- GNU Linker
+
 ### Features
 ###### Features marked with "!" are currently being implemented
 - [x] Lexical Analysis

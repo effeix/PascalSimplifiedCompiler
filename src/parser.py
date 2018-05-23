@@ -306,18 +306,19 @@ class Parser():
         arguments = []
         while Parser.tokens.current.type != "CLOSE_PAR":
             argument = Parser.__parse_rel_exp()
-
             if isinstance(argument, BoolVal):
                 arg_type = "BOOLEAN"
             elif isinstance(argument, IntVal):
                 arg_type = "INTEGER"
+            elif isinstance(argument, IdentifierNode):
+                arg_type = "IDENTIFIER"
 
             arguments.append((argument, arg_type))
 
             if Parser.tokens.current.type == "COMMA":
                 Parser.tokens.next()
             elif Parser.tokens.current.type != "CLOSE_PAR":
-                raise  ValueError("Invalid token")
+                raise ValueError("Invalid token")
 
         return arguments
 
@@ -487,6 +488,7 @@ class Parser():
 
         return node
 
-    def parse():
+    def parse(program=""):
+        Parser.tokens.origin = program
         Parser.tokens.next()
         return Parser.__parse_program()
