@@ -55,6 +55,7 @@ def main():
 
     if exec_type == "c":
         PATHS = get_paths(src_file)
+        Assembly.print()
         Assembly.make_file(PATHS["asm"])
 
         try:
