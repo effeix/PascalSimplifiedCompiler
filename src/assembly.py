@@ -88,7 +88,7 @@ JUMP_OPS = [
 ARITHMETIC_OPS = [
     "ADD",
     "SUB",
-    "DIV",
+    "IDIV",
     "IMUL"
 ]
 

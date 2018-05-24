@@ -40,7 +40,7 @@ class BinaryOp(Node):
                 raise ValueError("Variables must be of same type")
             if isinstance(a, bool) and isinstance(b, bool):
                 raise ValueError("This operation does not support bool")
-            self.__generate_assembly("DIV")
+            self.__generate_assembly("IDIV")
             return a // b
 
         elif self.value == "AND":
@@ -92,7 +92,9 @@ class BinaryOp(Node):
             ]
 
         elif op in ARITHMETIC_OPS or op in LOGIC_OPS:
-            if op == "IMUL" or op == "DIV":
+            if op == "IMUL" or op == "IDIV":
+                if op == "IDIV":
+                    Assembly.append("""  MOV EDX, 0""")
                 commands = [
                     f"""  {op} EBX""",
                     """  MOV EBX, EAX"""
