@@ -11,41 +11,34 @@ class BinaryOp(Node):
         b = self.children[1].eval(st)
         self.__generate_assembly("POP")
 
+        if type(a) != type(b):
+            raise ValueError("Variables must be of same type")
+
         if self.value == "PLUS":
-            if type(a) != type(b):
-                raise ValueError("Variables must be of same type")
             if isinstance(a, bool) and isinstance(b, bool):
                 raise ValueError("This operation does not support bool")
             self.__generate_assembly("ADD")
             return a + b
 
         elif self.value == "MINUS":
-            if type(a) != type(b):
-                raise ValueError("Variables must be of same type")
             if isinstance(a, bool) and isinstance(b, bool):
                 raise ValueError("This operation does not support bool")
             self.__generate_assembly("SUB")
             return a - b
 
         elif self.value == "MULT":
-            if type(a) != type(b):
-                raise ValueError("Variables must be of same type")
             if isinstance(a, bool) and isinstance(b, bool):
                 raise ValueError("This operation does not support bool")
             self.__generate_assembly("IMUL")
             return a * b
 
         elif self.value == "DIV":
-            if type(a) != type(b):
-                raise ValueError("Variables must be of same type")
             if isinstance(a, bool) and isinstance(b, bool):
                 raise ValueError("This operation does not support bool")
             self.__generate_assembly("IDIV")
             return a // b
 
         elif self.value == "AND":
-            if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type")
             self.__generate_assembly("AND")
             if isinstance(a, bool) and isinstance(b, bool):
                 return a and b
@@ -53,8 +46,6 @@ class BinaryOp(Node):
                 return a & b
 
         elif self.value == "OR":
-            if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type")
             self.__generate_assembly("OR")
             if isinstance(a, bool) and isinstance(b, bool):
                 return a or b
@@ -62,57 +53,51 @@ class BinaryOp(Node):
                 return a | b
 
         elif self.value == "MORE_THAN":
-            if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type")
             self.__generate_assembly("JG", n_id=n_id)
             return a > b
 
         elif self.value == "LESS_THAN":
-            if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type")
             self.__generate_assembly("JL", n_id=n_id)
             return a < b
 
         elif self.value == "EQUAL":
-            if(type(a) != type(b)):
-                raise ValueError("Variables must be of same type")
             self.__generate_assembly("JE", n_id=n_id)
             return a == b
 
         else:
             raise ValueError("Unkwown Operation")
 
-    def __generate_assembly(self, op, n_id=""):
-        if op in JUMP_OPS:
+    def __generate_assembly(self, instruction, n_id=""):
+        if instruction in JUMP_OPS:
             commands = [
                 """  CMP EAX, EBX""",
-                f"""  CALL binop_{op.lower()}""",
+                f"""  CALL binop_{instruction.lower()}""",
                 """  CMP EBX, False""",
                 f"""  JE EXIT_{n_id}"""
             ]
 
-        elif op in ARITHMETIC_OPS or op in LOGIC_OPS:
-            if op == "IMUL" or op == "IDIV":
-                if op == "IDIV":
+        elif instruction in ARITHMETIC_OPS + LOGIC_OPS:
+            if instruction == "IMUL" or instruction == "IDIV":
+                if instruction == "IDIV":
                     Assembly.append("""  MOV EDX, 0""")
                 commands = [
-                    f"""  {op} EBX""",
+                    f"""  {instruction} EBX""",
                     """  MOV EBX, EAX"""
                 ]
-            elif op == "SUB":
+            elif instruction == "SUB":
                 commands = [
-                    f"""  {op} EAX, EBX""",
+                    f"""  {instruction} EAX, EBX""",
                     """  MOV EBX, EAX"""
                 ]
             else:
-                commands = f"""  {op} EBX, EAX"""
+                commands = f"""  {instruction} EBX, EAX"""
 
-        elif op in STACK_OPS:
-            if op == "PUSH":
+        elif instruction in STACK_OPS:
+            if instruction == "PUSH":
                 register = "EBX"
-            elif op == "POP":
+            elif instruction == "POP":
                 register = "EAX"
 
-            commands = f"""  {op} {register}"""
+            commands = f"""  {instruction} {register}"""
 
         Assembly.append(commands)
