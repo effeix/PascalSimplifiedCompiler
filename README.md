@@ -1,7 +1,7 @@
 # Pascal Simplified Compiler
 
 ### Usage
-You are free to use PSC however you like. Simply clone the repository and run the file ```main.py``` (inside ```src/``` dir):
+You are free to use PSC however you like. Simply clone the repository and run the file ```main.py``` (located inside ```src/``` dir):
 
 ```sh
 $ python3 src/main.py PASCAL_FILE i|c
@@ -73,6 +73,6 @@ type = "bool" | "integer";
 ```
 
 ### Syntactic Diagram
-The syntactic diagram is a visual representation of the EBNF, describing the algorithm used by the compiler. If you pay close attention to the code, you will se the similarities between the diagram and the algorithm. Below is the syntactic diagram for this compiler:
+The syntactic diagram is a visual representation of the EBNF, describing the algorithm used by the compiler. If you pay close attention to the code, the similarities between the diagram and the algorithm are clear. Below is the syntactic diagram for this compiler:
 
 ![Syntactic Diagram](https://i.imgur.com/zgaumZ6.png)
