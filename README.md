@@ -1,7 +1,7 @@
 # Pascal Simplified Compiler
 
 ### Usage
-You are free to use PSC however you like. Simply clone the repository and run the file ```main.py``` (located inside ```src/``` dir):
+You are free to use PSC however you like. Simply clone the repository and run the file ```main.py``` (located inside directory ```src/```):
 
 ```sh
 $ python3 src/main.py PASCAL_FILE i|c
@@ -9,7 +9,7 @@ $ python3 src/main.py PASCAL_FILE i|c
 
 where ```i``` stands for the interpreted version and ```c``` for the compiled version.
 
-The compiled executable will be generated inside diretory ```bin/```, located in repository root (same level as src/).
+The compiled executable will be generated inside diretory ```bin/```, located in repository root (same level as ```src/```).
 
 ##### Dependencies
 - Python 3.6.x
