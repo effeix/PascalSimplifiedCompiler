@@ -9,6 +9,8 @@ $ python3 src/main.py PASCAL_FILE i|c
 
 where ```i``` stands for the interpreted version and ```c``` for the compiled version.
 
+The compiled executable will be generated inside diretory ```bin/```, located in repository root (same level as src/).
+
 ##### Dependencies
 - Python 3.6.x
 - NASM command line tool
