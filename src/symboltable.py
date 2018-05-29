@@ -1,4 +1,4 @@
-from identifier import Identifier
+from uuidmanager import UUIDManager
 
 
 class SymbolTable():
@@ -6,7 +6,7 @@ class SymbolTable():
         self.table = {}
         self.parent = parent
         self.is_global = False
-        self.identifier = Identifier.get_new()
+        self.identifier = UUIDManager.get_new()
 
         if parent is None:
             self.is_global = True
