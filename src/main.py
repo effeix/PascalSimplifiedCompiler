@@ -13,8 +13,9 @@ def read_pascal(f):
 
 
 def get_paths(filename):
+    original_filename = filename.split("/")[-1]
     src_file = filename
-    asm_file = src_file.replace(".pas", ".asm")
+    asm_file = original_filename.replace(".pas", ".asm")
     obj_file = asm_file.replace(".asm", ".o")
     exe_file = obj_file.replace(".o", "")
 
@@ -55,7 +56,7 @@ def main():
 
     if exec_type == "c":
         PATHS = get_paths(src_file)
-        Assembly.print()
+        # Assembly.print()
         Assembly.make_file(PATHS["asm"])
 
         try:
@@ -69,6 +70,8 @@ def main():
             sys.exit(f"Can't create executable file from {PATHS['obj']}")
 
         call(["rm", f"{PATHS['asm']}", f"{PATHS['obj']}"])
+
+        print(f"Done!\nExecutable: {PATHS['exe']}")
 
 
 if __name__ == "__main__":
