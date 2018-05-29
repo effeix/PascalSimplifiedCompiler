@@ -5,11 +5,11 @@ from assembly import Assembly, LOGIC_OPS, ARITHMETIC_OPS, JUMP_OPS, STACK_OPS
 class BinaryOp(Node):
     def eval(self, st, n_id=None):
 
-        if self.children:
-            a = self.children[0].eval(st)
-            self.__generate_assembly("PUSH")
-            b = self.children[1].eval(st)
-            self.__generate_assembly("POP")
+        a = self.children[0].eval(st)
+        self.__generate_assembly("PUSH")
+
+        b = self.children[1].eval(st)
+        self.__generate_assembly("POP")
 
         if self.value == "PLUS":
             if type(a) != type(b):
